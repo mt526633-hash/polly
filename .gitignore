@@ -1,0 +1,6 @@
+yours-product/node_modules/
+yours-product/dist/
+yours-product/.npm-cache/
+yours-product/.git-yours-product-backup/
+*.log
+.vercel/

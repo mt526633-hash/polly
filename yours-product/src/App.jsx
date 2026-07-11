@@ -47,24 +47,39 @@ const products = [
 ];
 
 function Header({onMenu,onSearch,onWishlist,onCart,wishlistCount,cartCount}) {
-  const messages = [
-    "Get 10% off when you sign up for emails",
-    "Get $10 off when you refer a friend",
-    "Free standard shipping on orders over LE 2,500",
-    "Students get an extra 12% off"
-  ];
-  
   const [msgIndex, setMsgIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(3600); // 1 hour
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(t => t > 0 ? t - 1 : 0);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTime = (seconds) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+  };
+
+  const messages = [
+    `Discount ends in ${formatTime(timeLeft)} — 15% OFF everything`,
+    "Get 10% off when you sign up for emails",
+    "Get $10 off when you refer a friend",
+    "Free standard shipping on orders over LE 2,500"
+  ];
 
   useEffect(() => {
     if (isPaused) return;
-    const interval = setInterval(() => {
+    const currentDelay = msgIndex === 0 ? 8000 : 3000;
+    const interval = setTimeout(() => {
       setMsgIndex((prev) => (prev + 1) % messages.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [isPaused, messages.length]);
+    }, currentDelay);
+    return () => clearTimeout(interval);
+  }, [isPaused, msgIndex, messages.length]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -78,7 +93,8 @@ function Header({onMenu,onSearch,onWishlist,onCart,wishlistCount,cartCount}) {
     <>
       <div className={`announcement ${isScrolled ? 'announcement-hidden' : ''}`}>
         <div className="announcement-msg-wrapper">
-          <a href="#" key={msgIndex} className="announcement-link fade-in-msg">
+          <a href="#" key={msgIndex} className="announcement-link fade-in-msg" onClick={(e) => { e.preventDefault(); window.scrollTo({top: 0, behavior: 'smooth'}); }}>
+            {msgIndex === 0 && <span className="discount-pulse"></span>}
             {messages[msgIndex]}
           </a>
         </div>
@@ -106,7 +122,15 @@ function Stars({count=0}) { return <div className={`stars ${count===0?'empty-sta
 function ProductRail({title, items, wishlist, toggleWishlist}) {
   const ref = useScrollReveal();
   return <section className="rail-section" ref={ref}>
-    <div className="section-title reveal"><h2>{title}</h2><button aria-label={`View all ${title}`}><ArrowRight/></button></div>
+    <div className="section-title reveal">
+      <h2>{title}</h2>
+      <div className="swipe-hint-container">
+        <span className="swipe-text-hint">Swipe left</span>
+        <button aria-label={`View all ${title}`} className="swipe-arrow-btn">
+          <ArrowRight className="swipe-arrow-anim"/>
+        </button>
+      </div>
+    </div>
     <div className="rail">
       {items.map((p,i)=><article className="card reveal" key={`${title}-${i}`}>
         <div className="card-image"><img src={p.image} alt={p.name}/><button className={wishlist.includes(p.name)?'saved':''} onClick={()=>toggleWishlist(p)} aria-label={`Save ${p.name}`}><Heart/></button></div>
@@ -217,8 +241,8 @@ export function App() {
           {['Small','Medium','Large','X-Large','XX-large'].map(s=><button className={size===s?'selected':''} onClick={()=>setSize(s)} key={s}>{s === 'Small' ? 'S' : s === 'Medium' ? 'M' : s === 'Large' ? 'L' : s === 'X-Large' ? 'XL' : 'XXL'}</button>)}
         </div>
         <button className={`add ${added?'added':''}`} onClick={()=>{setAdded(true); setCartQty(1); setCartOpen(true);}}>{added?'ADDED TO BAG':'PRE-ORDER — LE 1,899.00 EGP'}</button>
-        <div className="product-urgency-msg">
-          <Flame size={14} className="urgency-icon" />
+        <div className="product-urgency-msg urgency-glow">
+          <Flame size={14} className="urgency-icon urgency-flame-anim" />
           <span><b>Selling fast!</b> 8 people have this in their cart right now.</span>
         </div>
         
