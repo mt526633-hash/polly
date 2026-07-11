@@ -27,10 +27,10 @@ function useScrollReveal() {
       },
       { rootMargin: '0px 0px -100px 0px', threshold: 0 }
     );
-    // Observe the container itself and all .reveal children
-    const items = el.querySelectorAll('.reveal');
+    // Observe the container itself and all .reveal-up / .reveal-scale children
+    const items = el.querySelectorAll('.reveal-up, .reveal-scale');
     items.forEach((item) => observer.observe(item));
-    if (el.classList.contains('reveal')) observer.observe(el);
+    if (el.classList.contains('reveal-up') || el.classList.contains('reveal-scale')) observer.observe(el);
     return () => observer.disconnect();
   }, []);
   return ref;
@@ -119,10 +119,10 @@ function Header({onMenu,onSearch,onWishlist,onCart,wishlistCount,cartCount}) {
 
 function Stars({count=0}) { return <div className={`stars ${count===0?'empty-stars':''}`}><span>{[0,1,2,3,4].map(i=><Star key={i}/>)}</span><small>{count===0?'No reviews yet':`(${count})`}</small></div> }
 
-function ProductRail({title, items, wishlist, toggleWishlist}) {
+function ProductRail({title, items, wishlist, toggleWishlist, animClass = "reveal-up"}) {
   const ref = useScrollReveal();
   const [swiped, setSwiped] = useState(false);
-  return <section className="rail-section reveal" ref={ref}>
+  return <section className={`rail-section ${animClass}`} ref={ref}>
     <div className="section-title">
       <h2>{title}</h2>
       <div className={`swipe-hint-container ${swiped ? 'hint-hidden' : ''}`}>
@@ -248,7 +248,7 @@ export function App() {
         </div>
         
         {/* Gymshark-style highlights grid */}
-        <div className="gymshark-highlights reveal" ref={useScrollReveal()}>
+        <div className="gymshark-highlights reveal-scale" ref={useScrollReveal()}>
           <div className="highlight-item">
             <div className="highlight-icon"><Star size={18} /></div>
             <div className="highlight-text">
@@ -324,9 +324,10 @@ export function App() {
           </details>
         </div>
       </section>
-      <ProductRail title="More You'll Love" items={products.slice(0,4)} wishlist={wishlist.map(x=>x.name)} toggleWishlist={toggleWishlist}/>
-      <ProductRail title="Recently Viewed" items={[products[1],products[3],products[0]]} wishlist={wishlist.map(x=>x.name)} toggleWishlist={toggleWishlist}/>
-      <section className="reviews reveal" ref={useScrollReveal()}>
+      <ProductRail title="Shop the Look" items={products.slice(4,6)} wishlist={wishlist.map(x=>x.name)} toggleWishlist={toggleWishlist} animClass="reveal-up"/>
+      <ProductRail title="More You'll Love" items={products.slice(0,4)} wishlist={wishlist.map(x=>x.name)} toggleWishlist={toggleWishlist} animClass="reveal-up"/>
+      <ProductRail title="Recently Viewed" items={[products[1],products[3],products[0]]} wishlist={wishlist.map(x=>x.name)} toggleWishlist={toggleWishlist} animClass="reveal-up"/>
+      <section className="reviews reveal-scale" ref={useScrollReveal()}>
         <p className="reviews-kicker">REAL RESULTS</p>
         <h2>Loved by 10k+ Women</h2>
         <div className="review-score">
@@ -356,7 +357,7 @@ export function App() {
         </div>
         <button className="all-reviews">READ ALL REVIEWS <ArrowRight/></button>
       </section>
-      <section className="newsletter reveal" ref={useScrollReveal()}><p>THE YOURS EDIT</p><h2>{newsletterJoined?'Welcome to the edit.':'New drops, first.'}</h2><p>{newsletterJoined?'You are on the list. Watch your inbox for new collections and private releases.':'Receive considered updates about new pieces, private releases and styling notes.'}</p>{!newsletterJoined&&<form className="newsletter-form" onSubmit={e=>{e.preventDefault();setNewsletterJoined(true)}}><label htmlFor="newsletter-email">Email address</label><div><input id="newsletter-email" type="email" required value={newsletterEmail} onChange={e=>setNewsletterEmail(e.target.value)} placeholder="you@example.com"/><button type="submit">JOIN THE LIST <ArrowRight/></button></div></form>}</section>
+      <section className="newsletter reveal-scale" ref={useScrollReveal()}><p>THE YOURS EDIT</p><h2>{newsletterJoined?'Welcome to the edit.':'New drops, first.'}</h2><p>{newsletterJoined?'You are on the list. Watch your inbox for new collections and private releases.':'Receive considered updates about new pieces, private releases and styling notes.'}</p>{!newsletterJoined&&<form className="newsletter-form" onSubmit={e=>{e.preventDefault();setNewsletterJoined(true)}}><label htmlFor="newsletter-email">Email address</label><div><input id="newsletter-email" type="email" required value={newsletterEmail} onChange={e=>setNewsletterEmail(e.target.value)} placeholder="you@example.com"/><button type="submit">JOIN THE LIST <ArrowRight/></button></div></form>}</section>
     </main>
     {guide&&<SizeGuide close={()=>setGuide(false)}/>} 
     {reviewForm&&<ReviewForm close={()=>setReviewForm(false)}/>} 
