@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd yours-product && npm install && npm run build:vercel",
+  "buildCommand": "npm install -g pnpm && cd yours-product && pnpm install --frozen-lockfile && pnpm run build:vercel",
   "outputDirectory": "yours-product/dist",
   "installCommand": "echo skip",
   "framework": null,
