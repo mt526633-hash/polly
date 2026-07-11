@@ -2234,8 +2234,8 @@ header {
   background: #111111 !important;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 0, 0, 0.25) !important;
 }
-/ *    % % %  P r e m i u m   T y p o g r a p h y   f o r   S e c t i o n   H e a d e r s    % % %  * /  
- . s e c t i o n - t i t l e   h 2 ,   . g y m s h a r k - h i g h l i g h t s   h 4 ,   . r e v i e w s   h 2 ,   . n e w s l e t t e r   h 2   {   f o n t - f a m i l y :   ' P l a y f a i r   D i s p l a y ' ,   s e r i f   ! i m p o r t a n t ;   f o n t - s i z e :   2 6 p x   ! i m p o r t a n t ;   f o n t - w e i g h t :   6 0 0   ! i m p o r t a n t ;   l e t t e r - s p a c i n g :   0 . 0 1 e m   ! i m p o r t a n t ;   c o l o r :   # 1 1 1   ! i m p o r t a n t ;   }  
- . g y m s h a r k - h i g h l i g h t s   h 4   {   f o n t - s i z e :   1 8 p x   ! i m p o r t a n t ;   m a r g i n - b o t t o m :   6 p x   ! i m p o r t a n t ;   }  
- . r e v i e w s   h 2   {   f o n t - s i z e :   3 2 p x   ! i m p o r t a n t ;   }  
- 
+
+/* ─── Premium Typography for Section Headers ─── */
+.section-title h2, .gymshark-highlights h4, .reviews h2, .newsletter h2 { font-family: 'Playfair Display', serif !important; font-size: 26px !important; font-weight: 600 !important; letter-spacing: 0.01em !important; color: #111 !important; }
+.gymshark-highlights h4 { font-size: 18px !important; margin-bottom: 6px !important; }
+.reviews h2 { font-size: 32px !important; }
