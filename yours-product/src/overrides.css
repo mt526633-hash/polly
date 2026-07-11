@@ -821,9 +821,14 @@ body {
   top: 0 !important;
   z-index: 30 !important;
   width: 100%;
+  background: #ffffff !important; /* prevent any gap bleed */
 }
 header {
+  position: relative !important;
+  top: auto !important;
   background: #ffffff !important;
+  border-top: none !important;
+  margin-top: 0 !important;
 }
 .announcement {
   height: 36px !important;
