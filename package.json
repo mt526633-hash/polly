@@ -1,0 +1,9 @@
+{
+  "name": "yours-mobile-concept",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "npm@11.13.0",
+  "scripts": {
+    "build": "npm --prefix yours-product run build:vercel"
+  }
+}

@@ -1,7 +1,7 @@
 {
-  "buildCommand": "npm install -g pnpm@latest && cd yours-product && pnpm install && pnpm run build:vercel",
+  "installCommand": "npm ci --prefix yours-product",
+  "buildCommand": "npm run build:vercel --prefix yours-product",
   "outputDirectory": "yours-product/dist",
-  "installCommand": "echo skip",
   "framework": null,
   "rewrites": [
     {
