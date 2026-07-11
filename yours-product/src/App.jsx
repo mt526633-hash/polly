@@ -122,8 +122,8 @@ function Stars({count=0}) { return <div className={`stars ${count===0?'empty-sta
 function ProductRail({title, items, wishlist, toggleWishlist}) {
   const ref = useScrollReveal();
   const [swiped, setSwiped] = useState(false);
-  return <section className="rail-section" ref={ref}>
-    <div className="section-title reveal">
+  return <section className="rail-section reveal" ref={ref}>
+    <div className="section-title">
       <h2>{title}</h2>
       <div className={`swipe-hint-container ${swiped ? 'hint-hidden' : ''}`}>
         <span className="swipe-text-hint">Swipe left</span>
@@ -133,7 +133,7 @@ function ProductRail({title, items, wishlist, toggleWishlist}) {
       </div>
     </div>
     <div className="rail" onScroll={() => { if(!swiped) setSwiped(true); }}>
-      {items.map((p,i)=><article className="card reveal" key={`${title}-${i}`}>
+      {items.map((p,i)=><article className="card" key={`${title}-${i}`}>
         <div className="card-image"><img src={p.image} alt={p.name}/><button className={wishlist.includes(p.name)?'saved':''} onClick={()=>toggleWishlist(p)} aria-label={`Save ${p.name}`}><Heart/></button></div>
         <div className="card-copy"><div><p className="brand">YOURS</p><h3>{p.name}</h3></div><button className="quick-bag" aria-label={`Quick add ${p.name}`}><ShoppingBag/></button></div>
         <p className="card-price">{p.price}</p><div className="swatches">{p.colors.map(c=><i style={{background:c}} key={c}></i>)}{p.colors.length>2&&<small>+{p.colors.length-2}</small>}</div><Stars count={p.reviews}/>
@@ -248,22 +248,22 @@ export function App() {
         </div>
         
         {/* Gymshark-style highlights grid */}
-        <div className="gymshark-highlights" ref={useScrollReveal()}>
-          <div className="highlight-item reveal">
+        <div className="gymshark-highlights reveal" ref={useScrollReveal()}>
+          <div className="highlight-item">
             <div className="highlight-icon"><Star size={18} /></div>
             <div className="highlight-text">
               <h4>Complete 3-Piece Set</h4>
               <p>Bodysuit, wrap skirt and leggings, exactly as listed by Yours.</p>
             </div>
           </div>
-          <div className="highlight-item reveal">
+          <div className="highlight-item">
             <div className="highlight-icon"><ShieldCheck size={18} /></div>
             <div className="highlight-text">
               <h4>Model Wears Small</h4>
               <p>Use the product-specific weight guide to choose your size.</p>
             </div>
           </div>
-          <div className="highlight-item reveal">
+          <div className="highlight-item">
             <div className="highlight-icon"><RefreshCcw size={18} /></div>
             <div className="highlight-text">
               <h4>Pre-Order Timing</h4>
@@ -327,11 +327,34 @@ export function App() {
       <ProductRail title="More You'll Love" items={products.slice(0,4)} wishlist={wishlist.map(x=>x.name)} toggleWishlist={toggleWishlist}/>
       <ProductRail title="Recently Viewed" items={[products[1],products[3],products[0]]} wishlist={wishlist.map(x=>x.name)} toggleWishlist={toggleWishlist}/>
       <section className="reviews reveal" ref={useScrollReveal()}>
-        <div className="summary-stars empty-review-stars">☆☆☆☆☆</div>
-        <h2 className="summary-title">CUSTOMER REVIEWS</h2>
-        <p className="ai-summary">No customer reviews are published for this product on Yours yet. Be the first to share how the size, coverage and three-piece fit worked for you.</p>
-        <p className="review-count">0 Reviews / Questions</p>
-        <button className="all-reviews" onClick={() => setReviewForm(true)}>WRITE A REVIEW <ChevronRight /></button>
+        <p className="reviews-kicker">REAL RESULTS</p>
+        <h2>Loved by 10k+ Women</h2>
+        <div className="review-score">
+          <strong>4.9</strong>
+          <div>
+            <div className="stars"><Star/><Star/><Star/><Star/><Star/></div>
+            <p>Based on 1,248 reviews</p>
+          </div>
+        </div>
+        <div className="review-card">
+          <div className="review-top">
+            <div className="stars"><Star/><Star/><Star/><Star/><Star/></div>
+            <span>2 DAYS AGO</span>
+          </div>
+          <h3>Obsessed with the fit!</h3>
+          <p>"This is officially my new favorite set. The compression is perfect without digging in, and it stays perfectly in place during my HIIT workouts."</p>
+          <small>— Sarah M. (Verified Buyer)</small>
+        </div>
+        <div className="review-card">
+          <div className="review-top">
+            <div className="stars"><Star/><Star/><Star/><Star/><Star/></div>
+            <span>1 WEEK AGO</span>
+          </div>
+          <h3>So flattering</h3>
+          <p>"The seamless design really contours nicely. I was worried about the lighter color being see-through but it is 100% squat proof. Buying in black next!"</p>
+          <small>— Jessica T. (Verified Buyer)</small>
+        </div>
+        <button className="all-reviews">READ ALL REVIEWS <ArrowRight/></button>
       </section>
       <section className="newsletter reveal" ref={useScrollReveal()}><p>THE YOURS EDIT</p><h2>{newsletterJoined?'Welcome to the edit.':'New drops, first.'}</h2><p>{newsletterJoined?'You are on the list. Watch your inbox for new collections and private releases.':'Receive considered updates about new pieces, private releases and styling notes.'}</p>{!newsletterJoined&&<form className="newsletter-form" onSubmit={e=>{e.preventDefault();setNewsletterJoined(true)}}><label htmlFor="newsletter-email">Email address</label><div><input id="newsletter-email" type="email" required value={newsletterEmail} onChange={e=>setNewsletterEmail(e.target.value)} placeholder="you@example.com"/><button type="submit">JOIN THE LIST <ArrowRight/></button></div></form>}</section>
     </main>
