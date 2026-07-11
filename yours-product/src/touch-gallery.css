@@ -1,0 +1,2 @@
+.gallery{touch-action:pan-y;user-select:none;-webkit-user-select:none}.gallery-track{will-change:transform}.gallery-track img{-webkit-user-drag:none;pointer-events:auto}.gallery:active .gallery-track{transition-duration:420ms}
+@media(prefers-reduced-motion:reduce){.gallery-track{transition:none!important}}
