@@ -979,19 +979,11 @@ header {
   border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
   z-index: 40;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  animation: expertFloat 3s ease-in-out infinite;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
 .ask-expert-fab:active {
-  transform: scale(0.95);
-}
-@keyframes expertFloat {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
+  transform: scale(0.92);
 }
 .online-indicator {
   width: 7px;
@@ -1016,12 +1008,13 @@ header {
     opacity: 1;
   }
   100% {
-    transform: scale(2);
+    transform: scale(2.5);
     opacity: 0;
   }
 }
 .ask-expert-fab.has-sticky-bar {
-  bottom: 88px !important;
+  transform: translateY(-76px) scale(0.85);
+  transform-origin: bottom right;
 }
 
 /* Expert Stylist Header Section */
