@@ -132,12 +132,6 @@ select {
     animation: none !important;
   }
 
-  .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none !important;
-  }
-
   .card-image img,
   .add,
   .sticky-buy-btn,
