@@ -815,22 +815,17 @@ body {
 
 
 /* Announcement Bar Redesign */
-header {
+.sticky-header-container {
   position: -webkit-sticky !important;
   position: sticky !important;
-  top: 36px !important;
-  z-index: 30 !important;
-  background: #ffffff !important;
-  transition: top 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-header.header-scrolled {
   top: 0 !important;
+  z-index: 30 !important;
+  width: 100%;
+}
+header {
+  background: #ffffff !important;
 }
 .announcement {
-  position: -webkit-sticky !important;
-  position: sticky !important;
-  top: 0 !important;
-  z-index: 31 !important;
   height: 36px !important;
   background: #f4f4f4 !important; /* light grey background */
   color: #000000 !important; /* black text */
@@ -842,12 +837,11 @@ header.header-scrolled {
   opacity: 1;
   padding: 0 40px !important;
 }
-.announcement.announcement-hidden {
+.sticky-header-container.scrolled .announcement {
   height: 0 !important;
   opacity: 0 !important;
   padding: 0 !important;
   pointer-events: none;
-  top: -36px !important;
 }
 .announcement-msg-wrapper {
   flex: 1;

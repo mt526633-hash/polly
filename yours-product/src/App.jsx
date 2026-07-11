@@ -90,7 +90,7 @@ function Header({onMenu,onSearch,onWishlist,onCart,wishlistCount,cartCount}) {
   }, []);
 
   return (
-    <>
+    <div className={`sticky-header-container ${isScrolled ? 'scrolled' : ''}`}>
       <div className={`announcement ${isScrolled ? 'announcement-hidden' : ''}`}>
         <div className="announcement-msg-wrapper">
           <a href="#" key={msgIndex} className="announcement-link fade-in-msg" onClick={(e) => { e.preventDefault(); window.scrollTo({top: 0, behavior: 'smooth'}); }}>
@@ -106,14 +106,14 @@ function Header({onMenu,onSearch,onWishlist,onCart,wishlistCount,cartCount}) {
           {isPaused ? <Play size={11}/> : <Pause size={11}/>} 
         </button>
       </div>
-      <header className={isScrolled ? 'header-scrolled' : ''}>
+      <header>
         <button aria-label="Open menu" onClick={onMenu}><Menu/></button>
         <button aria-label="Search" onClick={onSearch}><Search/></button>
         <img className="logo" src="/assets/logo.png" alt="Yours" />
         <button aria-label="Love list" className="love" onClick={onWishlist}><Heart/><b>{wishlistCount}</b></button>
         <button aria-label="Bag" className="bag" onClick={onCart}><ShoppingBag/><b>{cartCount}</b></button>
       </header>
-    </>
+    </div>
   );
 }
 
@@ -242,7 +242,7 @@ export function App() {
           {['Small','Medium','Large','X-Large','XX-large'].map(s=><button className={size===s?'selected':''} onClick={()=>setSize(s)} key={s}>{s === 'Small' ? 'S' : s === 'Medium' ? 'M' : s === 'Large' ? 'L' : s === 'X-Large' ? 'XL' : 'XXL'}</button>)}
         </div>
         <button className={`add ${added?'added':''}`} onClick={()=>{setAdded(true); setCartQty(1); setCartOpen(true);}}>{added?'ADDED TO BAG':'PRE-ORDER — LE 1,899.00 EGP'}</button>
-        <div className="product-urgency-msg urgency-glow">
+        <div className="product-urgency-msg urgency-glow" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
           <Flame size={14} className="urgency-icon urgency-flame-anim" />
           <span><b className="urgency-text-glow">Selling fast!</b> 8 people have this in their cart right now.</span>
         </div>
