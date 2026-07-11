@@ -25,7 +25,7 @@ function useScrollReveal() {
           }
         });
       },
-      { threshold: 0.08 }
+      { rootMargin: '0px 0px -100px 0px', threshold: 0 }
     );
     // Observe the container itself and all .reveal children
     const items = el.querySelectorAll('.reveal');
