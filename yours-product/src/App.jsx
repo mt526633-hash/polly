@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Menu, Search, UserRound, ShoppingBag, Heart, X, ArrowRight, Truck, RefreshCcw, ShieldCheck, Star, ChevronRight, Ruler, ChevronDown, ChevronLeft, Flame, Info, Pause, Play } from 'lucide-react';
 import './styles.css';
 import './overrides.css';
@@ -9,6 +9,32 @@ import './product-switch.css';
 import './size-guide-fix.css';
 import './matrix-guide.css';
 import './touch-gallery.css';
+
+// Scroll-reveal: adds .is-visible when element enters viewport
+function useScrollReveal() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.08 }
+    );
+    // Observe the container itself and all .reveal children
+    const items = el.querySelectorAll('.reveal');
+    items.forEach((item) => observer.observe(item));
+    if (el.classList.contains('reveal')) observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+  return ref;
+}
 
 const sizes = ['Small','Medium','Large','X-Large','XX-Large'];
 const products = [
@@ -78,10 +104,11 @@ function Header({onMenu,onSearch,onWishlist,onCart,wishlistCount,cartCount}) {
 function Stars({count=0}) { return <div className={`stars ${count===0?'empty-stars':''}`}><span>{[0,1,2,3,4].map(i=><Star key={i}/>)}</span><small>{count===0?'No reviews yet':`(${count})`}</small></div> }
 
 function ProductRail({title, items, wishlist, toggleWishlist}) {
-  return <section className="rail-section">
-    <div className="section-title"><h2>{title}</h2><button aria-label={`View all ${title}`}><ArrowRight/></button></div>
+  const ref = useScrollReveal();
+  return <section className="rail-section" ref={ref}>
+    <div className="section-title reveal"><h2>{title}</h2><button aria-label={`View all ${title}`}><ArrowRight/></button></div>
     <div className="rail">
-      {items.map((p,i)=><article className="card" key={`${title}-${i}`}>
+      {items.map((p,i)=><article className="card reveal" key={`${title}-${i}`}>
         <div className="card-image"><img src={p.image} alt={p.name}/><button className={wishlist.includes(p.name)?'saved':''} onClick={()=>toggleWishlist(p)} aria-label={`Save ${p.name}`}><Heart/></button></div>
         <div className="card-copy"><div><p className="brand">YOURS</p><h3>{p.name}</h3></div><button className="quick-bag" aria-label={`Quick add ${p.name}`}><ShoppingBag/></button></div>
         <p className="card-price">{p.price}</p><div className="swatches">{p.colors.map(c=><i style={{background:c}} key={c}></i>)}{p.colors.length>2&&<small>+{p.colors.length-2}</small>}</div><Stars count={p.reviews}/>
@@ -196,22 +223,22 @@ export function App() {
         </div>
         
         {/* Gymshark-style highlights grid */}
-        <div className="gymshark-highlights">
-          <div className="highlight-item">
+        <div className="gymshark-highlights" ref={useScrollReveal()}>
+          <div className="highlight-item reveal">
             <div className="highlight-icon"><Star size={18} /></div>
             <div className="highlight-text">
               <h4>Complete 3-Piece Set</h4>
               <p>Bodysuit, wrap skirt and leggings, exactly as listed by Yours.</p>
             </div>
           </div>
-          <div className="highlight-item">
+          <div className="highlight-item reveal">
             <div className="highlight-icon"><ShieldCheck size={18} /></div>
             <div className="highlight-text">
               <h4>Model Wears Small</h4>
               <p>Use the product-specific weight guide to choose your size.</p>
             </div>
           </div>
-          <div className="highlight-item">
+          <div className="highlight-item reveal">
             <div className="highlight-icon"><RefreshCcw size={18} /></div>
             <div className="highlight-text">
               <h4>Pre-Order Timing</h4>
@@ -274,14 +301,14 @@ export function App() {
       </section>
       <ProductRail title="More You'll Love" items={products.slice(0,4)} wishlist={wishlist.map(x=>x.name)} toggleWishlist={toggleWishlist}/>
       <ProductRail title="Recently Viewed" items={[products[1],products[3],products[0]]} wishlist={wishlist.map(x=>x.name)} toggleWishlist={toggleWishlist}/>
-      <section className="reviews">
+      <section className="reviews reveal" ref={useScrollReveal()}>
         <div className="summary-stars empty-review-stars">☆☆☆☆☆</div>
         <h2 className="summary-title">CUSTOMER REVIEWS</h2>
         <p className="ai-summary">No customer reviews are published for this product on Yours yet. Be the first to share how the size, coverage and three-piece fit worked for you.</p>
         <p className="review-count">0 Reviews / Questions</p>
         <button className="all-reviews" onClick={() => setReviewForm(true)}>WRITE A REVIEW <ChevronRight /></button>
       </section>
-      <section className="newsletter"><p>THE YOURS EDIT</p><h2>{newsletterJoined?'Welcome to the edit.':'New drops, first.'}</h2><p>{newsletterJoined?'You are on the list. Watch your inbox for new collections and private releases.':'Receive considered updates about new pieces, private releases and styling notes.'}</p>{!newsletterJoined&&<form className="newsletter-form" onSubmit={e=>{e.preventDefault();setNewsletterJoined(true)}}><label htmlFor="newsletter-email">Email address</label><div><input id="newsletter-email" type="email" required value={newsletterEmail} onChange={e=>setNewsletterEmail(e.target.value)} placeholder="you@example.com"/><button type="submit">JOIN THE LIST <ArrowRight/></button></div></form>}</section>
+      <section className="newsletter reveal" ref={useScrollReveal()}><p>THE YOURS EDIT</p><h2>{newsletterJoined?'Welcome to the edit.':'New drops, first.'}</h2><p>{newsletterJoined?'You are on the list. Watch your inbox for new collections and private releases.':'Receive considered updates about new pieces, private releases and styling notes.'}</p>{!newsletterJoined&&<form className="newsletter-form" onSubmit={e=>{e.preventDefault();setNewsletterJoined(true)}}><label htmlFor="newsletter-email">Email address</label><div><input id="newsletter-email" type="email" required value={newsletterEmail} onChange={e=>setNewsletterEmail(e.target.value)} placeholder="you@example.com"/><button type="submit">JOIN THE LIST <ArrowRight/></button></div></form>}</section>
     </main>
     {guide&&<SizeGuide close={()=>setGuide(false)}/>} 
     {reviewForm&&<ReviewForm close={()=>setReviewForm(false)}/>} 

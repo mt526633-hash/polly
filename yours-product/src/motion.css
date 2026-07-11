@@ -52,19 +52,74 @@
   transform: scale(.985) !important;
 }
 
+/* ─── Scroll-reveal system ─── */
+/* Elements start hidden; JS adds .is-visible when they enter the viewport */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 600ms cubic-bezier(.22, 1, .36, 1),
+              transform 600ms cubic-bezier(.22, 1, .36, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered delays for cards inside rails */
+.reveal:nth-child(1) { transition-delay: 0ms; }
+.reveal:nth-child(2) { transition-delay: 80ms; }
+.reveal:nth-child(3) { transition-delay: 160ms; }
+.reveal:nth-child(4) { transition-delay: 240ms; }
+.reveal:nth-child(5) { transition-delay: 320ms; }
+.reveal:nth-child(6) { transition-delay: 400ms; }
+
+/* Highlight items stagger */
+.highlight-item.reveal:nth-child(1) { transition-delay: 0ms; }
+.highlight-item.reveal:nth-child(2) { transition-delay: 100ms; }
+.highlight-item.reveal:nth-child(3) { transition-delay: 200ms; }
+
+/* ─── Expert sheet: GPU-accelerated slide-up, zero lag ─── */
+.expert-overlay {
+  -webkit-overflow-scrolling: touch;
+}
+
+.expert-sheet {
+  transform: translateY(100%);
+  animation: sheetSlideUp 380ms cubic-bezier(.22, 1, .36, 1) forwards;
+  will-change: transform;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ─── iOS zoom fix: all inputs must be >= 16px ─── */
+/* iOS Safari auto-zooms whenever an input font-size is < 16px */
+input,
+textarea,
+select {
+  font-size: 16px !important;
+  touch-action: manipulation;
+}
+
+/* ─── Keyframes ─── */
 @keyframes productReveal {
   from { opacity: 0; transform: scale(1.025); }
-  to { opacity: 1; transform: scale(1); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
 @keyframes badgeReveal {
   from { opacity: 0; transform: translateY(7px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes contentLift {
   from { opacity: 0; transform: translateY(9px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes sheetSlideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -72,8 +127,15 @@
   .product-badge,
   .product-info > h1,
   .product-info > .price,
-  .product-info > .product-rating {
+  .product-info > .product-rating,
+  .expert-sheet {
     animation: none !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none !important;
   }
 
   .card-image img,
