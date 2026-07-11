@@ -149,20 +149,25 @@ select {
 
 /* ─── Urgency Glow Animation ─── */
 .urgency-glow {
-  animation: bgGlowPulse 2.5s infinite alternate ease-in-out;
   border-radius: 4px;
 }
-.urgency-flame-anim {
-  animation: iconPulse 1.5s infinite alternate ease-in-out;
-  color: #ff5722;
+.urgency-text-glow {
+  animation: textPulse 1.2s infinite alternate ease-in-out;
+  color: #ff3b30;
+  text-shadow: 0 0 8px rgba(255, 59, 48, 0.4);
 }
-@keyframes bgGlowPulse {
-  from { background-color: rgba(255, 87, 34, 0.05); }
-  to { background-color: rgba(255, 87, 34, 0.15); }
+@keyframes textPulse {
+  from { opacity: 0.8; text-shadow: 0 0 4px rgba(255, 59, 48, 0.2); }
+  to { opacity: 1; text-shadow: 0 0 10px rgba(255, 59, 48, 0.6); }
+}
+.urgency-flame-anim {
+  animation: iconPulse 1.2s infinite alternate ease-in-out;
+  color: #ff3b30;
+  filter: drop-shadow(0 0 2px rgba(255, 59, 48, 0.8));
 }
 @keyframes iconPulse {
-  from { transform: scale(0.9); opacity: 0.8; }
-  to { transform: scale(1.1); opacity: 1; }
+  from { transform: scale(0.95); opacity: 0.8; filter: drop-shadow(0 0 1px rgba(255, 59, 48, 0.4)); }
+  to { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 6px rgba(255, 59, 48, 0.9)); }
 }
 
 /* ─── Swipe Hint Animation ─── */
@@ -170,6 +175,11 @@ select {
   display: flex;
   align-items: center;
   gap: 6px;
+  transition: opacity 0.4s ease;
+}
+.hint-hidden {
+  opacity: 0;
+  pointer-events: none;
 }
 .swipe-text-hint {
   font-size: 10px;

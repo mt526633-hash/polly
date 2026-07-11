@@ -83,7 +83,7 @@ function Header({onMenu,onSearch,onWishlist,onCart,wishlistCount,cartCount}) {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 1800);
+      setIsScrolled(window.scrollY > 200);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -106,7 +106,7 @@ function Header({onMenu,onSearch,onWishlist,onCart,wishlistCount,cartCount}) {
           {isPaused ? <Play size={11}/> : <Pause size={11}/>} 
         </button>
       </div>
-      <header>
+      <header className={isScrolled ? 'header-scrolled' : ''}>
         <button aria-label="Open menu" onClick={onMenu}><Menu/></button>
         <button aria-label="Search" onClick={onSearch}><Search/></button>
         <img className="logo" src="/assets/logo.png" alt="Yours" />
@@ -121,17 +121,18 @@ function Stars({count=0}) { return <div className={`stars ${count===0?'empty-sta
 
 function ProductRail({title, items, wishlist, toggleWishlist}) {
   const ref = useScrollReveal();
+  const [swiped, setSwiped] = useState(false);
   return <section className="rail-section" ref={ref}>
     <div className="section-title reveal">
       <h2>{title}</h2>
-      <div className="swipe-hint-container">
+      <div className={`swipe-hint-container ${swiped ? 'hint-hidden' : ''}`}>
         <span className="swipe-text-hint">Swipe left</span>
         <button aria-label={`View all ${title}`} className="swipe-arrow-btn">
           <ArrowRight className="swipe-arrow-anim"/>
         </button>
       </div>
     </div>
-    <div className="rail">
+    <div className="rail" onScroll={() => { if(!swiped) setSwiped(true); }}>
       {items.map((p,i)=><article className="card reveal" key={`${title}-${i}`}>
         <div className="card-image"><img src={p.image} alt={p.name}/><button className={wishlist.includes(p.name)?'saved':''} onClick={()=>toggleWishlist(p)} aria-label={`Save ${p.name}`}><Heart/></button></div>
         <div className="card-copy"><div><p className="brand">YOURS</p><h3>{p.name}</h3></div><button className="quick-bag" aria-label={`Quick add ${p.name}`}><ShoppingBag/></button></div>
@@ -243,7 +244,7 @@ export function App() {
         <button className={`add ${added?'added':''}`} onClick={()=>{setAdded(true); setCartQty(1); setCartOpen(true);}}>{added?'ADDED TO BAG':'PRE-ORDER — LE 1,899.00 EGP'}</button>
         <div className="product-urgency-msg urgency-glow">
           <Flame size={14} className="urgency-icon urgency-flame-anim" />
-          <span><b>Selling fast!</b> 8 people have this in their cart right now.</span>
+          <span><b className="urgency-text-glow">Selling fast!</b> 8 people have this in their cart right now.</span>
         </div>
         
         {/* Gymshark-style highlights grid */}

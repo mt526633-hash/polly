@@ -818,28 +818,36 @@ body {
 header {
   position: -webkit-sticky !important;
   position: sticky !important;
-  top: 0 !important;
+  top: 36px !important;
   z-index: 30 !important;
   background: #ffffff !important;
+  transition: top 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+header.header-scrolled {
+  top: 0 !important;
 }
 .announcement {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 31 !important;
   height: 36px !important;
   background: #f4f4f4 !important; /* light grey background */
   color: #000000 !important; /* black text */
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  position: relative !important;
   overflow: hidden !important;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
   opacity: 1;
   padding: 0 40px !important;
 }
-.announcement-hidden .announcement {
+.announcement.announcement-hidden {
   height: 0 !important;
   opacity: 0 !important;
   padding: 0 !important;
   pointer-events: none;
+  top: -36px !important;
 }
 .announcement-msg-wrapper {
   flex: 1;
