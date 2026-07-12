@@ -169,7 +169,7 @@ select {
   filter: drop-shadow(0 0 2px rgba(255, 59, 48, 0.8));
 }
 @keyframes iconPulse {
-  from { transform: scale(0.95); opacity: 0.8; filter: drop-shadow(0 0 1px rgba(255, 59, 48, 0.4)); }
+  from { transform: scale(0.8); opacity: 0; filter: drop-shadow(0 0 0px rgba(255, 59, 48, 0)); }
   to { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 6px rgba(255, 59, 48, 0.9)); }
 }
 
@@ -213,4 +213,20 @@ select {
   0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.7); }
   70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(255, 59, 48, 0); }
   100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(255, 59, 48, 0); }
+}
+
+.squish-anim {
+  transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.squish-anim:active {
+  transform: scale(0.96) !important;
+}
+
+@keyframes skeletonPulse {
+  0% { background-color: #f1f1f1; }
+  50% { background-color: #e2e2e2; }
+  100% { background-color: #f1f1f1; }
+}
+.skeleton-pulse {
+  animation: skeletonPulse 1.5s infinite ease-in-out;
 }

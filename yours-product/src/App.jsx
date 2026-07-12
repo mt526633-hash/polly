@@ -10,6 +10,26 @@ import './size-guide-fix.css';
 import './matrix-guide.css';
 import './touch-gallery.css';
 
+// Custom Smooth Accordion
+const CustomAccordion = ({ title, children, defaultOpen = false }) => {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+  return (
+    <div className={`custom-accordion ${isOpen ? 'is-open' : ''}`}>
+      <button className="custom-accordion-header squish-anim" onClick={() => setIsOpen(!isOpen)}>
+        <span>{title}</span>
+        <ChevronDown className="custom-accordion-arrow" size={16} />
+      </button>
+      <div className="custom-accordion-content-wrapper">
+        <div className="custom-accordion-content">
+          <div className="custom-accordion-content-inner">
+            {children}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Scroll-reveal: adds .is-visible when element enters viewport
 function useScrollReveal() {
   const ref = useRef(null);
@@ -226,7 +246,7 @@ export function App() {
     <main>
       <div className="breadcrumbs">Home / Swim / Burkinis</div>
       <div className="gallery" onPointerDown={e=>setSwipeStart(e.clientX)} onPointerUp={e=>{if(swipeStart===null)return;const delta=e.clientX-swipeStart;if(Math.abs(delta)>42)setSlide(current=>delta<0?Math.min(1,current+1):Math.max(0,current-1));setSwipeStart(null)}} onPointerCancel={()=>setSwipeStart(null)}>
-        <div className="gallery-track" style={{transform:`translateX(-${slide*100}%)`}}>{[1,2].map(n=><img key={n} src={`/assets/grey-${n}.jpg`} alt={`Sleek Corset Burkini - Grey view ${n}`} onClick={()=>setLightboxImg(`/assets/grey-${n}.jpg`)} style={{cursor:'zoom-in'}}/>)}</div>
+        <div className="gallery-track" style={{transform:`translateX(-${slide*100}%)`}}>{[1,2].map(n=><img key={n} className="skeleton-pulse" onLoad={(e)=>e.target.classList.remove('skeleton-pulse')} src={`/assets/grey-${n}.jpg`} alt={`Sleek Corset Burkini - Grey view ${n}`} onClick={()=>setLightboxImg(`/assets/grey-${n}.jpg`)} style={{cursor:'zoom-in'}}/>)}</div>
         <div className="gallery-ui"><span>{slide+1} / 2</span><div>{[0,1].map(n=><button key={n} aria-label={`Image ${n+1}`} onClick={()=>setSlide(n)} className={slide===n?'active':''}></button>)}</div></div>
       </div>
       <section className="product-info">
@@ -241,7 +261,7 @@ export function App() {
         <div className="size-selector-card">
           {['Small','Medium','Large','X-Large','XX-large'].map(s=><button className={size===s?'selected':''} onClick={()=>setSize(s)} key={s}>{s === 'Small' ? 'S' : s === 'Medium' ? 'M' : s === 'Large' ? 'L' : s === 'X-Large' ? 'XL' : 'XXL'}</button>)}
         </div>
-        <button className={`add ${added?'added':''}`} onClick={()=>{setAdded(true); setCartQty(1); setCartOpen(true);}}>{added?'ADDED TO BAG':'PRE-ORDER — LE 1,899.00 EGP'}</button>
+        <button className={`add squish-anim ${added?'added':''}`} onClick={()=>{setAdded(true); setCartQty(1); setCartOpen(true);}}>{added?'ADDED TO BAG':'PRE-ORDER — LE 1,899.00 EGP'}</button>
         <div className="product-urgency-msg urgency-glow" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
           <Flame size={14} className="urgency-icon urgency-flame-anim" />
           <span><b className="urgency-text-glow">Selling fast!</b> 8 people have this in their cart right now.</span>
@@ -253,54 +273,30 @@ export function App() {
 
         {/* Gymshark-style collapsible accordion sections */}
         <div className="accordion-group">
-          <details className="gym-accordion" open name="product-info">
-            <summary>
-              <span>Description & Features</span>
-              <ChevronDown className="gym-accordion-arrow" size={16} />
-            </summary>
-            <div className="gym-accordion-content">
-              <p>Burkini Set of 3 pieces {'{'}Bodysuit - Wrap Skirt - Leggings{'}'}</p>
-              <p>Model is Wearing size SMALL</p>
-            </div>
-          </details>
+          <CustomAccordion title="Description & Features" defaultOpen={true}>
+            <p>Burkini Set of 3 pieces {'{'}Bodysuit - Wrap Skirt - Leggings{'}'}</p>
+            <p>Model is Wearing size SMALL</p>
+          </CustomAccordion>
 
-          <details className="gym-accordion" name="product-info">
-            <summary>
-              <span>Size & Fit</span>
-              <ChevronDown className="gym-accordion-arrow" size={16} />
-            </summary>
-            <div className="gym-accordion-content">
-              <p>Burkinis Size Chart</p>
-              <ul>
-                <li><strong>S:</strong> 50–55 kg</li><li><strong>M:</strong> 55–60 kg</li><li><strong>L:</strong> 60–65 kg</li><li><strong>XL:</strong> 65–70 kg</li><li><strong>XXL:</strong> 70–75 kg</li>
-              </ul>
-            </div>
-          </details>
+          <CustomAccordion title="Size & Fit">
+            <p>Burkinis Size Chart</p>
+            <ul>
+              <li><strong>S:</strong> 50–55 kg</li><li><strong>M:</strong> 55–60 kg</li><li><strong>L:</strong> 60–65 kg</li><li><strong>XL:</strong> 65–70 kg</li><li><strong>XXL:</strong> 70–75 kg</li>
+            </ul>
+          </CustomAccordion>
 
-          <details className="gym-accordion" name="product-info">
-            <summary>
-              <span>Shipping</span>
-              <ChevronDown className="gym-accordion-arrow" size={16} />
-            </summary>
-            <div className="gym-accordion-content">
-              <ul>
-                <li><strong>Orders:</strong> 2–6 working days</li><li><strong>Pre-orders:</strong> 10–15 working days</li>
-              </ul>
-            </div>
-          </details>
+          <CustomAccordion title="Shipping">
+            <ul>
+              <li><strong>Orders:</strong> 2–6 working days</li><li><strong>Pre-orders:</strong> 10–15 working days</li>
+            </ul>
+          </CustomAccordion>
 
-          <details className="gym-accordion" name="product-info">
-            <summary>
-              <span>Policy</span>
-              <ChevronDown className="gym-accordion-arrow" size={16} />
-            </summary>
-            <div className="gym-accordion-content">
-              <p>Check if the order suits you before paying. If not, return it with the courier on the spot and only pay shipping fees.</p>
-              <ul>
-                <li>No returns after paying; exchanges within 14 days.</li><li>Customers cover additional costs.</li><li><strong>Burkinis:</strong> once the courier leaves, no exchange or refund.</li><li>No returns or exchanges on sale items.</li>
-              </ul>
-            </div>
-          </details>
+          <CustomAccordion title="Policy">
+            <p>Check if the order suits you before paying. If not, return it with the courier on the spot and only pay shipping fees.</p>
+            <ul>
+              <li>No returns after paying; exchanges within 14 days.</li><li>Customers cover additional costs.</li><li><strong>Burkinis:</strong> once the courier leaves, no exchange or refund.</li><li>No returns or exchanges on sale items.</li>
+            </ul>
+          </CustomAccordion>
         </div>
       </section>
       <ProductRail title="More You'll Love" items={products.slice(0,4)} wishlist={wishlist.map(x=>x.name)} toggleWishlist={toggleWishlist} animClass="reveal-up"/>
@@ -346,6 +342,18 @@ export function App() {
         {!newsletterJoined&&<form className="newsletter-form" onSubmit={e=>{e.preventDefault();setNewsletterJoined(true)}} style={{ margin: '0 auto', textAlign: 'left' }}><label htmlFor="newsletter-email">Email address</label><div><input id="newsletter-email" type="email" required value={newsletterEmail} onChange={e=>setNewsletterEmail(e.target.value)} placeholder="you@example.com"/><button type="submit">JOIN THE LIST <ArrowRight/></button></div></form>}
       </section>
     </main>
+
+    {showSticky && (
+      <div className="sticky-buy-bar">
+        <div>
+          <p className="price" style={{color: 'var(--lux-ink)', fontWeight: 600}}>LE 1,899.00 EGP</p>
+          <p style={{fontSize: '9px', color: 'var(--lux-muted)', margin: 0, marginTop: '2px'}}>Sleek Corset Burkini</p>
+        </div>
+        <button className={`add squish-anim ${added?'added':''}`} onClick={()=>{setAdded(true); setCartQty(1); setCartOpen(true);}}>
+          {added ? 'ADDED' : 'ADD TO BAG'}
+        </button>
+      </div>
+    )}
     {guide&&<SizeGuide close={()=>setGuide(false)} currentSize={size} setSize={setSize}/>} 
     {reviewForm&&<ReviewForm close={()=>setReviewForm(false)}/>} 
     {menu && (
