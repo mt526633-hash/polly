@@ -247,6 +247,10 @@ export function App() {
           <span><b className="urgency-text-glow">Selling fast!</b> 8 people have this in their cart right now.</span>
         </div>
         
+        <button className="ask-expert-inline" onClick={(e) => { e.preventDefault(); setExpertOpen(true); }}>
+          ASK AN EXPERT
+        </button>
+        
         {/* Gymshark-style highlights grid */}
         <div className="gymshark-highlights reveal-scale" ref={useScrollReveal()}>
           <div className="highlight-item">
