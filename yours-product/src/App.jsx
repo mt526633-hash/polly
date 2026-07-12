@@ -47,10 +47,10 @@ function useScrollReveal() {
       },
       { rootMargin: '0px 0px -100px 0px', threshold: 0 }
     );
-    // Observe the container itself and all .reveal-up / .reveal-scale children
-    const items = el.querySelectorAll('.reveal-up, .reveal-scale');
+    // Observe the container itself and all reveal children
+    const items = el.querySelectorAll('.reveal-up, .reveal-scale, .reveal-shimmer');
     items.forEach((item) => observer.observe(item));
-    if (el.classList.contains('reveal-up') || el.classList.contains('reveal-scale')) observer.observe(el);
+    if (el.classList.contains('reveal-up') || el.classList.contains('reveal-scale') || el.classList.contains('reveal-shimmer')) observer.observe(el);
     return () => observer.disconnect();
   }, []);
   return ref;
@@ -240,6 +240,16 @@ export function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Lock body scroll when overlays are open
+  useEffect(() => {
+    if (menu || guide || searchOpen || cartOpen || expertOpen || reviewForm || lightboxImg || wishlistOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [menu, guide, searchOpen, cartOpen, expertOpen, reviewForm, lightboxImg, wishlistOpen]);
+
   const toggleWishlist=(p)=>setWishlist(w=>w.some(x=>x.name===p.name)?w.filter(x=>x.name!==p.name):[...w,p]);
   return <div className="page">
     <Header onMenu={()=>setMenu(true)} onSearch={() => setSearchOpen(true)} onWishlist={()=>{setCartTab('wishlist');setCartOpen(true);}} onCart={() => {setCartTab('bag');setCartOpen(true);}} wishlistCount={wishlist.length} cartCount={added ? cartQty : 0}/>
@@ -267,7 +277,7 @@ export function App() {
           <span><b className="urgency-text-glow">Selling fast!</b> 8 people have this in their cart right now.</span>
         </div>
         
-        <button className="ask-expert-inline" onClick={(e) => { e.stopPropagation(); e.preventDefault(); setExpertOpen(true); }}>
+        <button ref={useScrollReveal()} className="ask-expert-inline reveal-shimmer" onClick={(e) => { e.stopPropagation(); e.preventDefault(); setExpertOpen(true); }}>
           ASK AN EXPERT
         </button>
 

@@ -50,3 +50,4 @@ header{background:rgba(251,250,247,.96)!important;backdrop-filter:blur(14px);bor
 .custom-accordion-content-inner { padding-bottom: 18px; font-size: 12px; line-height: 1.6; color: var(--lux-muted); }
 .custom-accordion-arrow { transition: transform 0.3s ease; }
 .custom-accordion.is-open .custom-accordion-arrow { transform: rotate(180deg); }
+

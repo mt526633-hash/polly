@@ -980,7 +980,7 @@ header {
   position: relative;
   overflow: hidden;
 }
-.ask-expert-inline::before {
+.ask-expert-inline.is-visible::before {
   content: '';
   position: absolute;
   top: 0;
