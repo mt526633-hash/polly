@@ -247,34 +247,9 @@ export function App() {
           <span><b className="urgency-text-glow">Selling fast!</b> 8 people have this in their cart right now.</span>
         </div>
         
-        <button className="ask-expert-inline" onClick={(e) => { e.preventDefault(); setExpertOpen(true); }}>
+        <button className="ask-expert-inline" onClick={(e) => { e.stopPropagation(); e.preventDefault(); setExpertOpen(true); }}>
           ASK AN EXPERT
         </button>
-        
-        {/* Gymshark-style highlights grid */}
-        <div className="gymshark-highlights reveal-scale" ref={useScrollReveal()}>
-          <div className="highlight-item">
-            <div className="highlight-icon"><Star size={18} /></div>
-            <div className="highlight-text">
-              <h4>Complete 3-Piece Set</h4>
-              <p>Bodysuit, wrap skirt and leggings, exactly as listed by Yours.</p>
-            </div>
-          </div>
-          <div className="highlight-item">
-            <div className="highlight-icon"><ShieldCheck size={18} /></div>
-            <div className="highlight-text">
-              <h4>Model Wears Small</h4>
-              <p>Use the product-specific weight guide to choose your size.</p>
-            </div>
-          </div>
-          <div className="highlight-item">
-            <div className="highlight-icon"><RefreshCcw size={18} /></div>
-            <div className="highlight-text">
-              <h4>Pre-Order Timing</h4>
-              <p>Pre-orders take 10–15 working days.</p>
-            </div>
-          </div>
-        </div>
 
         {/* Gymshark-style collapsible accordion sections */}
         <div className="accordion-group">

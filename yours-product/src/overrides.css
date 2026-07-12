@@ -985,16 +985,15 @@ header {
   left: -100%;
   width: 50%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
-  animation: goldShimmer 3s infinite;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), transparent);
+  animation: goldShimmer 0.7s ease-out 1;
 }
 @keyframes goldShimmer {
   0% { left: -100%; }
-  25% { left: 200%; }
   100% { left: 200%; }
 }
 .ask-expert-inline:active {
-  transform: scale(0.98);
+  transform: scale(0.96);
 }
 
 /* Expert Stylist Header Section */
