@@ -778,14 +778,14 @@ export function App() {
     )}
 
     {/* Floating "Ask an Expert" Capsule FAB */}
-    {!footerInView && <button 
+    {!footerInView && <a href="#expert-sheet" 
       className={`ask-expert-fab ${showSticky ? 'has-sticky-bar' : ''}`} 
-      onClick={() => setExpertOpen(true)}
-      aria-label="Ask an expert"
+      onClick={(e) => { e.preventDefault(); setExpertOpen(true); }}
+      aria-label="Ask Expert"
     >
-      <span className="online-indicator"></span>
-      <span>Ask an Expert</span>
-    </button>}
+      <div className="online-indicator"></div>
+      <span>Ask Expert</span>
+    </a>}
 
     {/* Stylist Expert consultation drawer */}
     {expertOpen && (

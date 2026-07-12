@@ -968,7 +968,7 @@ header {
   background: #0f172a;
   color: #ffffff;
   border-radius: 30px;
-  padding: 10px 18px;
+  padding: 10px 14px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1013,8 +1013,7 @@ header {
   }
 }
 .ask-expert-fab.has-sticky-bar {
-  transform: translateY(-76px) scale(0.85);
-  transform-origin: bottom right;
+  transform: translateY(-76px);
 }
 
 /* Expert Stylist Header Section */
