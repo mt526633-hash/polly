@@ -791,7 +791,6 @@ export function App() {
       onClick={(e) => { e.preventDefault(); setExpertOpen(true); }}
       aria-label="Ask an expert"
     >
-      <div className="online-indicator"></div>
       <span>Ask an Expert</span>
     </button>}
 
