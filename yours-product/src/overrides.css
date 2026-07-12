@@ -992,15 +992,7 @@ header {
   background: #10b981;
   display: inline-block;
   position: relative;
-}
-.online-indicator::after {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border-radius: 50%;
-  border: 1px solid #10b981;
-  animation: expertPulse 1.8s infinite;
-  opacity: 0;
+  box-shadow: 0 0 0 2px #0f172a, 0 0 0 4px #059669;
 }
 @keyframes expertPulse {
   0% {

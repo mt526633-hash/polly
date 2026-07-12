@@ -142,8 +142,8 @@ function ProductRail({title, items, wishlist, toggleWishlist, animClass = "revea
   </section>
 }
 
-function SizeGuide({close}) {
-  const [guideSize,setGuideSize]=useState('Small');
+function SizeGuide({close, currentSize, setSize}) {
+  const [guideSize,setGuideSize]=useState(currentSize || 'Small');
   const [unit,setUnit]=useState('kg');
   const rows=[['Small','S',50,55],['Medium','M',55,60],['Large','L',60,65],['X-Large','XL',65,70],['XX-large','XXL',70,75]];
   const range=(r)=>unit==='kg'?`${r[2]}–${r[3]}`:`${Math.round(r[2]*2.20462)}–${Math.round(r[3]*2.20462)}`;
@@ -156,7 +156,7 @@ function SizeGuide({close}) {
     <div className="size-matrix"><div className="matrix-corner">SIZE</div><div className="matrix-heading">RANGE <small>{unit.toUpperCase()}</small></div><div className="matrix-heading">SELECT</div>{rows.map(r=><button className={`matrix-row ${guideSize===r[0]?'active':''}`} onClick={()=>setGuideSize(r[0])} key={r[0]}><strong>{r[1]}</strong><span>{range(r)} {unit}</span><i>{guideSize===r[0]?'SELECTED':'CHOOSE'}</i></button>)}</div>
     <div className="matrix-product"><img src="/assets/grey-2.jpg" alt="Sleek Corset Burkini fit reference"/><div><p>SLEEK CORSET BURKINI</p><h3>Three-piece coverage</h3><span>Bodysuit, wrap skirt and leggings. Model wears size Small.</span></div></div>
     <div className="matrix-result"><span>YOUR SELECTION</span><strong>{selected[1]}</strong><p>{range(selected)} {unit}</p></div>
-    <button className="close-sheet matrix-use" onClick={close}>USE SIZE {selected[1]}</button>
+    <button className="close-sheet matrix-use" onClick={() => { setSize?.(selected[0]); close(); }}>USE SIZE {selected[1]}</button>
   </div></div>
 }
 
@@ -367,7 +367,7 @@ export function App() {
         {!newsletterJoined&&<form className="newsletter-form" onSubmit={e=>{e.preventDefault();setNewsletterJoined(true)}} style={{ margin: '0 auto', textAlign: 'left' }}><label htmlFor="newsletter-email">Email address</label><div><input id="newsletter-email" type="email" required value={newsletterEmail} onChange={e=>setNewsletterEmail(e.target.value)} placeholder="you@example.com"/><button type="submit">JOIN THE LIST <ArrowRight/></button></div></form>}
       </section>
     </main>
-    {guide&&<SizeGuide close={()=>setGuide(false)}/>} 
+    {guide&&<SizeGuide close={()=>setGuide(false)} currentSize={size} setSize={setSize}/>} 
     {reviewForm&&<ReviewForm close={()=>setReviewForm(false)}/>} 
     {menu && (
       <div className="overlay menu-overlay" onClick={() => setMenu(false)}>
