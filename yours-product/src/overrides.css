@@ -975,6 +975,7 @@ header {
   font-family: var(--font-primary);
   font-size: 12px !important;
   font-weight: 600;
+  word-spacing: 0.1em;
   box-shadow: 0 4px 16px rgba(15, 23, 42, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
