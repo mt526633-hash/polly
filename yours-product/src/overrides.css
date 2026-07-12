@@ -2229,6 +2229,9 @@ header {
 }
 
 /* ─── Premium Typography for Section Headers ─── */
-.section-title h2, .gymshark-highlights h4, .reviews h2, .newsletter h2 { font-family: 'Playfair Display', serif !important; font-size: 26px !important; font-weight: 600 !important; letter-spacing: 0.01em !important; color: #111 !important; }
+.section-title h2, .gymshark-highlights h4, .reviews h2, .newsletter h2 { font-family: 'Playfair Display', serif !important; font-size: 26px !important; font-weight: 600 !important; letter-spacing: 0.01em !important; }
 .gymshark-highlights h4 { font-size: 18px !important; margin-bottom: 6px !important; }
 .reviews h2 { font-size: 32px !important; }
+.review-card h3 { font-variant-ligatures: none; font-size: 15px !important; margin-bottom: 6px !important; }
+.review-card p { font-size: 13px !important; line-height: 1.5 !important; }
+.newsletter { text-align: center; }

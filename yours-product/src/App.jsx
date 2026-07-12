@@ -355,9 +355,18 @@ export function App() {
           <p>"The seamless design really contours nicely. I was worried about the lighter color being see-through but it is 100% squat proof. Buying in black next!"</p>
           <small>— Jessica T. (Verified Buyer)</small>
         </div>
-        <button className="all-reviews">READ ALL REVIEWS <ArrowRight/></button>
+        <div style={{ display: 'flex', gap: '8px', marginTop: '16px' }}>
+          <button className="all-reviews" style={{ flex: 1 }}>READ ALL REVIEWS <ArrowRight/></button>
+          <button className="all-reviews" style={{ flex: 1, background: '#111', color: '#fff', border: 'none' }} onClick={() => setReviewForm(true)}>WRITE A REVIEW <ArrowRight color="#fff"/></button>
+        </div>
       </section>
-      <section className="newsletter reveal-scale" ref={useScrollReveal()}><p>THE YOURS EDIT</p><h2>{newsletterJoined?'Welcome to the edit.':'New drops, first.'}</h2><p>{newsletterJoined?'You are on the list. Watch your inbox for new collections and private releases.':'Receive considered updates about new pieces, private releases and styling notes.'}</p>{!newsletterJoined&&<form className="newsletter-form" onSubmit={e=>{e.preventDefault();setNewsletterJoined(true)}}><label htmlFor="newsletter-email">Email address</label><div><input id="newsletter-email" type="email" required value={newsletterEmail} onChange={e=>setNewsletterEmail(e.target.value)} placeholder="you@example.com"/><button type="submit">JOIN THE LIST <ArrowRight/></button></div></form>}</section>
+
+      {/* Newsletter / CTA Section */}
+      <section className="newsletter reveal-scale" ref={useScrollReveal()}>
+        <h2>{newsletterJoined?'Welcome to the edit.':'New drops, first.'}</h2>
+        <p style={{ margin: '12px auto' }}>{newsletterJoined?'You are on the list. Watch your inbox for new collections and private releases.':'Receive considered updates about new pieces, private releases and styling notes.'}</p>
+        {!newsletterJoined&&<form className="newsletter-form" onSubmit={e=>{e.preventDefault();setNewsletterJoined(true)}} style={{ margin: '0 auto', textAlign: 'left' }}><label htmlFor="newsletter-email">Email address</label><div><input id="newsletter-email" type="email" required value={newsletterEmail} onChange={e=>setNewsletterEmail(e.target.value)} placeholder="you@example.com"/><button type="submit">JOIN THE LIST <ArrowRight/></button></div></form>}
+      </section>
     </main>
     {guide&&<SizeGuide close={()=>setGuide(false)}/>} 
     {reviewForm&&<ReviewForm close={()=>setReviewForm(false)}/>} 
