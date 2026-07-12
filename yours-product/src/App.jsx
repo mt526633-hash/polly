@@ -139,9 +139,11 @@ function Header({onMenu,onSearch,onWishlist,onCart,wishlistCount,cartCount}) {
 
 function Stars({count=0}) { return <div className={`stars ${count===0?'empty-stars':''}`}><span>{[0,1,2,3,4].map(i=><Star key={i}/>)}</span><small>{count===0?'No reviews yet':`(${count})`}</small></div> }
 
-function ProductRail({title, items, wishlist, toggleWishlist, animClass = "reveal-up"}) {
+function ProductRail({title, items, wishlist, toggleWishlist, onRestrictedClick, animClass = "reveal-up"}) {
   const ref = useScrollReveal();
   const [swiped, setSwiped] = useState(false);
+  const railRef = useRef(null);
+
   return <section className={`rail-section ${animClass}`} ref={ref}>
     <div className="section-title">
       <h2>{title}</h2>
@@ -152,10 +154,10 @@ function ProductRail({title, items, wishlist, toggleWishlist, animClass = "revea
         </button>
       </div>
     </div>
-    <div className="rail" onScroll={() => { if(!swiped) setSwiped(true); }}>
+    <div className="rail" ref={railRef} onScroll={() => { if(!swiped) setSwiped(true); }}>
       {items.map((p,i)=><article className="card" key={`${title}-${i}`}>
-        <div className="card-image"><img src={p.image} alt={p.name}/><button className={wishlist.includes(p.name)?'saved':''} onClick={()=>toggleWishlist(p)} aria-label={`Save ${p.name}`}><Heart/></button></div>
-        <div className="card-copy"><div><p className="brand">YOURS</p><h3>{p.name}</h3></div><button className="quick-bag" aria-label={`Quick add ${p.name}`}><ShoppingBag/></button></div>
+        <div className="card-image"><img src={p.image} alt={p.name} onClick={onRestrictedClick} style={{cursor:'pointer'}} draggable={false} /><button className={wishlist.includes(p.name)?'saved':''} onClick={()=>toggleWishlist(p)} aria-label={`Save ${p.name}`}><Heart/></button></div>
+        <div className="card-copy"><div><p className="brand">YOURS</p><h3 onClick={onRestrictedClick} style={{cursor:'pointer'}}>{p.name}</h3></div><button className="quick-bag" onClick={onRestrictedClick} aria-label={`Quick add ${p.name}`}><ShoppingBag/></button></div>
         <p className="card-price">{p.price}</p><div className="swatches">{p.colors.map(c=><i style={{background:c}} key={c}></i>)}{p.colors.length>2&&<small>+{p.colors.length-2}</small>}</div><Stars count={p.reviews}/>
       </article>)}
     </div>
@@ -228,6 +230,7 @@ export function App() {
   const [discountCode, setDiscountCode] = useState('');
   const [discountApplied, setDiscountApplied] = useState(false);
   const [cartTab, setCartTab] = useState('bag');
+  const [restrictedMsg, setRestrictedMsg] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -242,13 +245,51 @@ export function App() {
 
   // Lock body scroll when overlays are open
   useEffect(() => {
-    if (menu || guide || searchOpen || cartOpen || expertOpen || reviewForm || lightboxImg || wishlistOpen) {
+    if (menu || guide || searchOpen || cartOpen || expertOpen || reviewForm || lightboxImg || wishlistOpen || restrictedMsg) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
     }
     return () => { document.body.style.overflow = ''; };
-  }, [menu, guide, searchOpen, cartOpen, expertOpen, reviewForm, lightboxImg, wishlistOpen]);
+  }, [menu, guide, searchOpen, cartOpen, expertOpen, reviewForm, lightboxImg, wishlistOpen, restrictedMsg]);
+
+  // Global drag-to-scroll for all horizontally scrollable elements
+  useEffect(() => {
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    let activeElem = null;
+
+    const onMouseDown = (e) => {
+      const elem = e.target.closest('.rail, .menu-banners-row, .search-rail, .cart-tabs-switch-wrapper, .cart-cross-sell-rail, .size-selector-card');
+      if (!elem) return;
+      isDown = true;
+      activeElem = elem;
+      startX = e.pageX - elem.offsetLeft;
+      scrollLeft = elem.scrollLeft;
+    };
+    const onMouseLeave = () => { isDown = false; activeElem = null; };
+    const onMouseUp = () => { isDown = false; activeElem = null; };
+    const onMouseMove = (e) => {
+      if (!isDown || !activeElem) return;
+      e.preventDefault();
+      const x = e.pageX - activeElem.offsetLeft;
+      const walk = (x - startX) * 1.5;
+      activeElem.scrollLeft = scrollLeft - walk;
+    };
+
+    window.addEventListener('mousedown', onMouseDown);
+    window.addEventListener('mouseleave', onMouseLeave);
+    window.addEventListener('mouseup', onMouseUp);
+    window.addEventListener('mousemove', onMouseMove);
+
+    return () => {
+      window.removeEventListener('mousedown', onMouseDown);
+      window.removeEventListener('mouseleave', onMouseLeave);
+      window.removeEventListener('mouseup', onMouseUp);
+      window.removeEventListener('mousemove', onMouseMove);
+    };
+  }, []);
 
   const toggleWishlist=(p)=>setWishlist(w=>w.some(x=>x.name===p.name)?w.filter(x=>x.name!==p.name):[...w,p]);
   return <div className="page">
@@ -256,7 +297,7 @@ export function App() {
     <main>
       <div className="breadcrumbs">Home / Swim / Burkinis</div>
       <div className="gallery" onPointerDown={e=>setSwipeStart(e.clientX)} onPointerUp={e=>{if(swipeStart===null)return;const delta=e.clientX-swipeStart;if(Math.abs(delta)>42)setSlide(current=>delta<0?Math.min(1,current+1):Math.max(0,current-1));setSwipeStart(null)}} onPointerCancel={()=>setSwipeStart(null)}>
-        <div className="gallery-track" style={{transform:`translateX(-${slide*100}%)`}}>{[1,2].map(n=><img key={n} className="skeleton-pulse" onLoad={(e)=>e.target.classList.remove('skeleton-pulse')} src={`/assets/grey-${n}.jpg`} alt={`Sleek Corset Burkini - Grey view ${n}`} onClick={()=>setLightboxImg(`/assets/grey-${n}.jpg`)} style={{cursor:'zoom-in'}}/>)}</div>
+        <div className="gallery-track" style={{transform:`translateX(-${slide*100}%)`}}>{[1,2].map(n=><img key={n} className="skeleton-pulse" onLoad={(e)=>e.target.classList.remove('skeleton-pulse')} src={`/assets/grey-${n}.jpg`} alt={`Sleek Corset Burkini - Grey view ${n}`} onClick={()=>setLightboxImg(`/assets/grey-${n}.jpg`)} style={{cursor:'zoom-in'}} draggable={false} />)}</div>
         <div className="gallery-ui"><span>{slide+1} / 2</span><div>{[0,1].map(n=><button key={n} aria-label={`Image ${n+1}`} onClick={()=>setSlide(n)} className={slide===n?'active':''}></button>)}</div></div>
       </div>
       <section className="product-info">
@@ -309,8 +350,8 @@ export function App() {
           </CustomAccordion>
         </div>
       </section>
-      <ProductRail title="More You'll Love" items={products.slice(0,4)} wishlist={wishlist.map(x=>x.name)} toggleWishlist={toggleWishlist} animClass="reveal-up"/>
-      <ProductRail title="Recently Viewed" items={[products[1],products[3],products[0]]} wishlist={wishlist.map(x=>x.name)} toggleWishlist={toggleWishlist} animClass="reveal-up"/>
+      <ProductRail title="More You'll Love" items={products.slice(0,4)} wishlist={wishlist.map(x=>x.name)} toggleWishlist={toggleWishlist} onRestrictedClick={() => setRestrictedMsg(true)} animClass="reveal-up"/>
+      <ProductRail title="Recently Viewed" items={[products[1],products[3],products[0]]} wishlist={wishlist.map(x=>x.name)} toggleWishlist={toggleWishlist} onRestrictedClick={() => setRestrictedMsg(true)} animClass="reveal-up"/>
       <section className="reviews reveal-scale" ref={useScrollReveal()}>
         <p className="reviews-kicker">REAL RESULTS</p>
         <h2>Loved by 10k+ Women</h2>
@@ -353,17 +394,6 @@ export function App() {
       </section>
     </main>
 
-    {showSticky && (
-      <div className="sticky-buy-bar">
-        <div>
-          <p className="price" style={{color: 'var(--lux-ink)', fontWeight: 600}}>LE 1,899.00 EGP</p>
-          <p style={{fontSize: '9px', color: 'var(--lux-muted)', margin: 0, marginTop: '2px'}}>Sleek Corset Burkini</p>
-        </div>
-        <button className={`add squish-anim ${added?'added':''}`} onClick={()=>{setAdded(true); setCartQty(1); setCartOpen(true);}}>
-          {added ? 'ADDED' : 'ADD TO BAG'}
-        </button>
-      </div>
-    )}
     {guide&&<SizeGuide close={()=>setGuide(false)} currentSize={size} setSize={setSize}/>} 
     {reviewForm&&<ReviewForm close={()=>setReviewForm(false)}/>} 
     {menu && (
@@ -509,8 +539,8 @@ export function App() {
                 {products.slice(0, 4).map((p, i) => (
                   <article className="search-card" key={`search-rv-${i}`}>
                     <div className="search-card-image">
-                      <img src={p.image} alt={p.name} />
-                      <button className="search-card-quick-bag" onClick={() => setAdded(true)} aria-label="Quick Add">
+                      <img src={p.image} alt={p.name} onClick={() => setRestrictedMsg(true)} style={{cursor:'pointer'}} />
+                      <button className="search-card-quick-bag" onClick={() => setRestrictedMsg(true)} aria-label="Quick Add">
                         <ShoppingBag size={14} />
                       </button>
                       <button className={`search-card-wish ${wishlist.some(x => x.name === p.name) ? 'saved' : ''}`} onClick={() => toggleWishlist(p)} aria-label="Save">
@@ -526,8 +556,8 @@ export function App() {
                     </div>
                   </article>
                 ))}
+              </div>
             </div>
-          </div>
         </div>
       </div>
     </div>
@@ -648,17 +678,17 @@ export function App() {
                           <p className="cross-sell-price">
                             LE 1,599.00 <span className="strike-price">LE 1,899.00</span>
                           </p>
-                          <button className="cross-sell-add-btn" onClick={() => { setAdded(true); setCartQty(q => q + 1); alert("Added Burgundy Corset Burkini to bag!"); }}>
+                          <button className="cross-sell-add-btn" onClick={() => setRestrictedMsg(true)}>
                             + ADD
                           </button>
                         </div>
                       </article>
                       <article className="cross-sell-card">
-                        <img src="/assets/barbie.jpg" alt="Barbie Burkini" />
+                        <img src="/assets/barbie.jpg" alt="Barbie Burkini" onClick={() => setRestrictedMsg(true)} style={{cursor:'pointer'}} />
                         <div className="cross-sell-info">
                           <h5>Barbie Burkini</h5>
                           <p className="cross-sell-price">LE 2,499.00</p>
-                          <button className="cross-sell-add-btn" onClick={() => { setAdded(true); setCartQty(q => q + 1); alert("Added Barbie Burkini to bag!"); }}>
+                          <button className="cross-sell-add-btn" onClick={() => setRestrictedMsg(true)}>
                             + ADD
                           </button>
                         </div>
@@ -810,6 +840,47 @@ export function App() {
             <input type="tel" placeholder="Your Phone" required className="expert-input" />
             <button className="submit-expert" type="submit">SUBMIT</button>
           </form>
+        </div>
+      </div>
+    )}
+
+    {/* Brand Restriction Notice Modal */}
+    {restrictedMsg && (
+      <div className="overlay" style={{zIndex: 10000, position: 'fixed', left: 0, right: 0, margin: '0 auto', maxWidth: '430px', justifyContent: 'center', alignItems: 'center', padding: '24px', boxSizing: 'border-box'}} onClick={() => setRestrictedMsg(false)}>
+        <div className="sheet" style={{
+          padding: '48px 32px 40px', 
+          textAlign: 'center', 
+          background: 'var(--lux-paper)', 
+          borderRadius: '28px', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center',
+          boxShadow: '0 32px 64px -16px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,0,0,0.05)',
+          width: '100%',
+          maxWidth: '340px',
+          margin: 0
+        }} onClick={e => e.stopPropagation()}>
+          <div style={{
+            marginBottom: '28px', 
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '52px',
+            height: '52px',
+            background: 'linear-gradient(135deg, #2a2a26 0%, #171714 100%)', 
+            borderRadius: '50%', 
+            boxShadow: '0 12px 24px -4px rgba(23, 23, 20, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.15)', 
+            border: '1px solid rgba(255, 255, 255, 0.05)'
+          }}>
+            <ShieldCheck size={24} strokeWidth={1.5} style={{color: '#e3c473', filter: 'drop-shadow(0 2px 4px rgba(227, 196, 115, 0.3))'}}/>
+          </div>
+          <h2 style={{fontSize: '15px', textTransform: 'uppercase', marginBottom: '16px', fontFamily: 'var(--font-primary)', letterSpacing: '0.15em', color: 'var(--lux-ink)', fontWeight: 500}}>Restricted Access</h2>
+          <p style={{fontSize: '13px', color: 'var(--lux-muted)', lineHeight: '1.7', marginBottom: '36px', maxWidth: '300px', fontWeight: 300}}>
+            Due to an exclusive agreement with YOURS, this collection is currently restricted. We are solely authorized to showcase the <strong style={{fontWeight: 500, color: 'var(--lux-ink)'}}>Sleek Corset Burkini - Grey</strong> during this preview phase.
+          </p>
+          <button className="gold-glow-btn" onClick={() => setRestrictedMsg(false)}>
+            UNDERSTOOD
+          </button>
         </div>
       </div>
     )}

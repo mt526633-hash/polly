@@ -737,7 +737,9 @@ body {
 
 /* Sticky bottom buy bar styling */
 .sticky-buy-bar {
-  position: fixed;
+  box-sizing: border-box;
+  position: sticky;
+  width: 100%;
   bottom: 0;
   left: 0;
   right: 0;
@@ -1297,8 +1299,6 @@ header {
   }
   .sticky-buy-bar {
     max-width: 430px;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
     border-left: 1px solid var(--color-border);
     border-right: 1px solid var(--color-border);
     border-radius: 12px 12px 0 0;
