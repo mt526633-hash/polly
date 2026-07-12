@@ -274,7 +274,7 @@ export function App() {
 
         {/* Gymshark-style collapsible accordion sections */}
         <div className="accordion-group">
-          <details className="gym-accordion" open>
+          <details className="gym-accordion" open name="product-info">
             <summary>
               <span>Description & Features</span>
               <ChevronDown className="gym-accordion-arrow" size={16} />
@@ -285,7 +285,7 @@ export function App() {
             </div>
           </details>
 
-          <details className="gym-accordion">
+          <details className="gym-accordion" name="product-info">
             <summary>
               <span>Size & Fit</span>
               <ChevronDown className="gym-accordion-arrow" size={16} />
@@ -298,7 +298,7 @@ export function App() {
             </div>
           </details>
 
-          <details className="gym-accordion">
+          <details className="gym-accordion" name="product-info">
             <summary>
               <span>Shipping</span>
               <ChevronDown className="gym-accordion-arrow" size={16} />
@@ -310,7 +310,7 @@ export function App() {
             </div>
           </details>
 
-          <details className="gym-accordion">
+          <details className="gym-accordion" name="product-info">
             <summary>
               <span>Policy</span>
               <ChevronDown className="gym-accordion-arrow" size={16} />
@@ -324,7 +324,6 @@ export function App() {
           </details>
         </div>
       </section>
-      <ProductRail title="Shop the Look" items={products.slice(4,6)} wishlist={wishlist.map(x=>x.name)} toggleWishlist={toggleWishlist} animClass="reveal-up"/>
       <ProductRail title="More You'll Love" items={products.slice(0,4)} wishlist={wishlist.map(x=>x.name)} toggleWishlist={toggleWishlist} animClass="reveal-up"/>
       <ProductRail title="Recently Viewed" items={[products[1],products[3],products[0]]} wishlist={wishlist.map(x=>x.name)} toggleWishlist={toggleWishlist} animClass="reveal-up"/>
       <section className="reviews reveal-scale" ref={useScrollReveal()}>
@@ -355,9 +354,9 @@ export function App() {
           <p>"The seamless design really contours nicely. I was worried about the lighter color being see-through but it is 100% squat proof. Buying in black next!"</p>
           <small>— Jessica T. (Verified Buyer)</small>
         </div>
-        <div style={{ display: 'flex', gap: '8px', marginTop: '16px' }}>
-          <button className="all-reviews" style={{ flex: 1 }}>READ ALL REVIEWS <ArrowRight/></button>
-          <button className="all-reviews" style={{ flex: 1, background: '#111', color: '#fff', border: 'none' }} onClick={() => setReviewForm(true)}>WRITE A REVIEW <ArrowRight color="#fff"/></button>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '16px' }}>
+          <button className="all-reviews" onClick={() => setReviewForm(true)}>WRITE A REVIEW <ChevronRight /></button>
+          <button className="all-reviews">READ ALL REVIEWS <ChevronRight /></button>
         </div>
       </section>
 
