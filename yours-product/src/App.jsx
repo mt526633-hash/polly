@@ -354,9 +354,9 @@ export function App() {
           <p>"The seamless design really contours nicely. I was worried about the lighter color being see-through but it is 100% squat proof. Buying in black next!"</p>
           <small>— Jessica T. (Verified Buyer)</small>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '16px' }}>
-          <button className="all-reviews" onClick={() => setReviewForm(true)}>WRITE A REVIEW <ChevronRight /></button>
-          <button className="all-reviews">READ ALL REVIEWS <ChevronRight /></button>
+        <div style={{ display: 'flex', gap: '10px', marginTop: '24px' }}>
+          <button style={{ flex: 1, padding: '14px 10px', background: '#333', color: '#fff', border: '1px solid #333', fontSize: '11px', letterSpacing: '0.05em' }} onClick={() => setReviewForm(true)}>Write a Review</button>
+          <button style={{ flex: 1, padding: '14px 10px', background: 'transparent', color: '#333', border: '1px solid #333', fontSize: '11px', letterSpacing: '0.05em' }}>SHOW MORE</button>
         </div>
       </section>
 
@@ -736,13 +736,13 @@ export function App() {
               ) : (
                 <div className="wish-items-drawer" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   {wishlist.map(p => (
-                    <article className="wish-item-card-row" key={p.name} style={{ display: 'grid', gridTemplateColumns: '70px 1fr', gap: '16px', background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '6px', padding: '12px', position: 'relative' }}>
+                    <article className="wish-item-card-row" key={p.name} style={{ display: 'grid', gridTemplateColumns: '70px 1fr', gap: '16px', background: '#ffffff', border: 'none', padding: '12px', position: 'relative' }}>
                       <img src={p.image} alt={p.name} style={{ width: '70px', aspectRatio: '3/4', objectFit: 'cover', borderRadius: '4px' }} />
                       <div className="wish-item-info" style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
                         <h3 style={{ fontSize: '12px', fontWeight: '600', color: '#0f172a', margin: '0 0 4px 0' }}>{p.name}</h3>
                         <p style={{ fontSize: '11px', color: '#64748b', margin: '0 0 10px 0' }}>{p.price}</p>
                         <div className="wish-item-actions" style={{ display: 'flex', gap: '10px' }}>
-                          <button className="wish-move-to-bag" onClick={() => { toggleWishlist(p); setAdded(true); setCartQty(1); setCartTab('bag'); }} style={{ border: '1px solid #000000', background: '#000000', color: '#ffffff', fontSize: '9px', fontWeight: '700', padding: '4px 8px', borderRadius: '12px', cursor: 'pointer' }}>
+                          <button className="wish-move-to-bag" onClick={() => { toggleWishlist(p); setAdded(true); setCartQty(1); setCartTab('bag'); }} style={{ border: 'none', background: '#000000', color: '#ffffff', fontSize: '9px', fontWeight: '700', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer' }}>
                             MOVE TO BAG
                           </button>
                           <button className="wish-remove-btn" onClick={() => toggleWishlist(p)} style={{ border: '1px solid #cbd5e1', background: '#ffffff', color: '#64748b', fontSize: '9px', fontWeight: '600', padding: '4px 8px', borderRadius: '12px', cursor: 'pointer' }}>
