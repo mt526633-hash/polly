@@ -48,9 +48,9 @@ function useScrollReveal() {
       { rootMargin: '0px 0px -100px 0px', threshold: 0 }
     );
     // Observe the container itself and all reveal children
-    const items = el.querySelectorAll('.reveal-up, .reveal-scale, .reveal-shimmer');
+    const items = el.querySelectorAll('.reveal-up, .reveal-scale, .reveal-shimmer, .highlight-text');
     items.forEach((item) => observer.observe(item));
-    if (el.classList.contains('reveal-up') || el.classList.contains('reveal-scale') || el.classList.contains('reveal-shimmer')) observer.observe(el);
+    if (el.classList.contains('reveal-up') || el.classList.contains('reveal-scale') || el.classList.contains('reveal-shimmer') || el.classList.contains('highlight-text')) observer.observe(el);
     return () => observer.disconnect();
   }, []);
   return ref;
@@ -327,7 +327,7 @@ export function App() {
             <span>2 DAYS AGO</span>
           </div>
           <h3>Obsessed with the fit!</h3>
-          <p>"This is officially my new favorite set. The compression is perfect without digging in, and it stays perfectly in place during my HIIT workouts."</p>
+          <p>"This is officially my new favorite set. The <mark className="highlight-text">compression is perfect</mark> without digging in, and it stays perfectly in place during my HIIT workouts."</p>
           <small>— Sarah M. (Verified Buyer)</small>
         </div>
         <div className="review-card">
@@ -336,7 +336,7 @@ export function App() {
             <span>1 WEEK AGO</span>
           </div>
           <h3>So flattering</h3>
-          <p>"The seamless design really contours nicely. I was worried about the lighter color being see-through but it is 100% squat proof. Buying in black next!"</p>
+          <p>"The <mark className="highlight-text">seamless design</mark> really contours nicely. I was worried about the lighter color being see-through but it is 100% squat proof. Buying in black next!"</p>
           <small>— Jessica T. (Verified Buyer)</small>
         </div>
         <div style={{ display: 'flex', gap: '10px', marginTop: '24px' }}>
