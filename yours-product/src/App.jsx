@@ -88,7 +88,7 @@ function Header({onMenu,onSearch,onWishlist,onCart,wishlistCount,cartCount}) {
   const messages = [
     `Discount ends in ${formatTime(timeLeft)} — 15% OFF everything`,
     "Get 10% off when you sign up for emails",
-    "Get $10 off when you refer a friend",
+    "Get 10 EGP off when you refer a friend",
     "Free standard shipping on orders over LE 2,500"
   ];
 
