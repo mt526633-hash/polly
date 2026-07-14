@@ -9397,8 +9397,8 @@ header {
     transform: translate3d(-50%, 0, 0) !important;
     will-change: opacity !important;
     transition:
-      opacity 0.42s ease-out,
-      visibility 0s linear 0.42s !important;
+      opacity 0s linear,
+      visibility 0s linear 0s !important;
   }
 
   .sticky-buy-bar.sticky-bar-translucent.sticky-visible,
