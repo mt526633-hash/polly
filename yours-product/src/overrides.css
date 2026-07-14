@@ -9412,7 +9412,7 @@ header {
 @media (max-width: 600px) {
   .sticky-buy-bar.sticky-bar-translucent,
   .sticky-buy-bar.sticky-bar-translucent.is-small {
-    bottom: -1px !important;
+    bottom: 8px !important;
     padding: 12px 16px 0 !important;
     overflow: visible !important;
     transform: translate3d(-50%, 0, 0) !important;
