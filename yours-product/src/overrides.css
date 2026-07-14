@@ -8872,26 +8872,26 @@ header {
 
 /* Slower, calmer motion for the mobile-width storefront and its centered preview. */
 .sticky-header-container {
-  transition: transform 0.64s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transition: transform 1.08s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .sticky-header-container header {
   transition:
-    transform 0.62s cubic-bezier(0.16, 1, 0.3, 1),
-    background-color 0.38s ease,
-    box-shadow 0.38s ease !important;
+    transform 1.04s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.72s ease,
+    box-shadow 0.72s ease !important;
 }
 
 .sticky-header-container .announcement {
   transition:
-    transform 0.66s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.42s ease !important;
+    transform 1.14s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.76s ease !important;
 }
 
 .sticky-header-container .announcement .announcement-content {
   transition:
-    opacity 0.4s ease,
-    transform 0.54s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    opacity 0.72s ease,
+    transform 0.94s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 /* Editorial search — a solid, self-contained storefront page. */
