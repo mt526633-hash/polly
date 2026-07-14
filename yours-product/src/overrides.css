@@ -9388,3 +9388,37 @@ header {
     animation: premiumShippingBarSweep 1.45s ease-out 0.24s 1 both !important;
   }
 }
+
+/* Stable, composited mobile entrance for the sticky purchase action. */
+@media (max-width: 600px) {
+  .sticky-buy-bar.sticky-bar-translucent,
+  .sticky-buy-bar.sticky-bar-translucent.is-small {
+    transform: translate3d(-50%, 22px, 0) !important;
+    contain: layout paint style !important;
+    transition:
+      opacity 0.3s ease-out,
+      transform 0.46s cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s linear 0.46s !important;
+  }
+
+  .sticky-buy-bar.sticky-bar-translucent.sticky-visible,
+  .sticky-buy-bar.sticky-bar-translucent.sticky-visible.is-small {
+    transform: translate3d(-50%, 0, 0) !important;
+    transition:
+      opacity 0.34s ease-out,
+      transform 0.48s cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s linear 0s !important;
+  }
+
+  .sticky-buy-bar.sticky-bar-translucent .free-shipping-btn,
+  .sticky-buy-bar.sticky-bar-translucent.is-small .free-shipping-btn {
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
+    contain: layout paint style !important;
+    transition:
+      width 0.64s cubic-bezier(0.22, 1, 0.36, 1),
+      height 0.58s cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 0.2s ease,
+      box-shadow 0.24s ease !important;
+  }
+}

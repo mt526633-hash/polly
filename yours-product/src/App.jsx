@@ -467,6 +467,9 @@ export function App() {
   const [discountApplied, setDiscountApplied] = useState(false);
   const [restrictedMsg, setRestrictedMsg] = useState(false);
   const [isStickySmall, setIsStickySmall] = useState(false);
+  const stickyVisibleRef = useRef(false);
+  const stickySmallRef = useRef(false);
+  const footerInViewRef = useRef(false);
 
   const clothingReviews = [
     { name: "Sarah M.", text: "\"This is officially my new favorite set. The compression is perfect without digging in, and it stays perfectly in place during my HIIT workouts.\"", title: "Obsessed with the fit!", time: "2 DAYS AGO", rating: 5 },
@@ -492,9 +495,21 @@ export function App() {
       const newsletter = document.querySelector('.newsletter');
       const newsletterNear = newsletter ? newsletter.getBoundingClientRect().top < window.innerHeight * 0.88 : false;
       const scrollY = window.scrollY;
-      setFooterInView(newsletterNear);
-      setShowSticky(scrollY > 720);
-      setIsStickySmall(scrollY > 880);
+      const nextVisible = stickyVisibleRef.current ? scrollY > 650 : scrollY > 760;
+      const nextSmall = nextVisible && (stickySmallRef.current ? scrollY > 900 : scrollY > 1020);
+
+      if (newsletterNear !== footerInViewRef.current) {
+        footerInViewRef.current = newsletterNear;
+        setFooterInView(newsletterNear);
+      }
+      if (nextVisible !== stickyVisibleRef.current) {
+        stickyVisibleRef.current = nextVisible;
+        setShowSticky(nextVisible);
+      }
+      if (nextSmall !== stickySmallRef.current) {
+        stickySmallRef.current = nextSmall;
+        setIsStickySmall(nextSmall);
+      }
     };
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
