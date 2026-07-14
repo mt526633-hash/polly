@@ -8894,6 +8894,15 @@ header {
     transform 0.94s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
+/* Stagger the mobile chrome so fast scrolling does not collapse both layers at once. */
+.sticky-header-container.announcement-gone header {
+  transition-delay: 0.36s, 0s, 0s !important;
+}
+
+.sticky-header-container.header-hidden {
+  transition-delay: 0.52s !important;
+}
+
 /* Editorial search — a solid, self-contained storefront page. */
 .editorial-search-overlay {
   z-index: 120 !important;
