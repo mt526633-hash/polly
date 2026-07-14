@@ -489,10 +489,6 @@ export function App() {
 
   useEffect(() => {
     const themeMeta = document.querySelector('meta[name="theme-color"]');
-    const pageScroller = document.documentElement.classList.contains('chrome-ios')
-      ? document.querySelector('.page')
-      : null;
-    const scrollTarget = pageScroller || window;
     let activeTheme = themeMeta?.getAttribute('content') || '';
     let scrollFrame = 0;
 
@@ -509,7 +505,7 @@ export function App() {
         : newsletterRect && newsletterRect.top <= edgeY && newsletterRect.bottom >= edgeY
           ? 'rgb(233, 196, 140)'
           : 'rgb(255, 255, 255)';
-      const scrollY = pageScroller ? pageScroller.scrollTop : window.scrollY;
+      const scrollY = window.scrollY;
       const nextVisible = stickyVisibleRef.current ? scrollY > 650 : scrollY > 760;
       const nextSmall = nextVisible && (stickySmallRef.current ? scrollY > 900 : scrollY > 1020);
 
@@ -538,12 +534,12 @@ export function App() {
     };
 
     updateScrollState();
-    scrollTarget.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
     window.visualViewport?.addEventListener('resize', handleScroll, { passive: true });
     return () => {
       if (scrollFrame) window.cancelAnimationFrame(scrollFrame);
       document.documentElement.classList.remove('is-page-ending');
-      scrollTarget.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', handleScroll);
       window.visualViewport?.removeEventListener('resize', handleScroll);
     };
   }, []);
