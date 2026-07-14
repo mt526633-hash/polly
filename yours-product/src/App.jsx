@@ -490,8 +490,10 @@ export function App() {
   useEffect(() => {
     const themeMeta = document.querySelector('meta[name="theme-color"]');
     let activeTheme = themeMeta?.getAttribute('content') || '';
+    let scrollFrame = 0;
 
-    const handleScroll = () => {
+    const updateScrollState = () => {
+      scrollFrame = 0;
       const newsletter = document.querySelector('.newsletter');
       const reviews = document.querySelector('.reviews');
       const newsletterNear = newsletter ? newsletter.getBoundingClientRect().top < window.innerHeight * 0.88 : false;
@@ -524,10 +526,17 @@ export function App() {
         themeMeta.setAttribute('content', nextTheme);
       }
     };
-    handleScroll();
+
+    const handleScroll = () => {
+      if (scrollFrame) return;
+      scrollFrame = window.requestAnimationFrame(updateScrollState);
+    };
+
+    updateScrollState();
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.visualViewport?.addEventListener('resize', handleScroll, { passive: true });
     return () => {
+      if (scrollFrame) window.cancelAnimationFrame(scrollFrame);
       window.removeEventListener('scroll', handleScroll);
       window.visualViewport?.removeEventListener('resize', handleScroll);
     };

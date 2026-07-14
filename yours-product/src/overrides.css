@@ -9710,6 +9710,32 @@ header {
   }
 }
 
+/* Keep the mobile resize on a fixed stage so fast scrolling cannot move the bar. */
+@media (max-width: 600px) {
+  .sticky-buy-bar .sticky-cta-motion {
+    position: relative !important;
+    height: 50px !important;
+    min-height: 50px !important;
+    max-height: 50px !important;
+    flex: 0 0 100% !important;
+    contain: size layout style !important;
+    overflow: visible !important;
+  }
+
+  .sticky-buy-bar.sticky-bar-translucent .free-shipping-btn,
+  .sticky-buy-bar.sticky-bar-translucent.is-small .free-shipping-btn {
+    flex: 0 0 auto !important;
+    margin: auto !important;
+    transform: translate3d(0, 0, 0) !important;
+    transform-origin: center center !important;
+    transition:
+      width 0.96s cubic-bezier(0.16, 1, 0.3, 1),
+      height 0.82s cubic-bezier(0.16, 1, 0.3, 1),
+      background-color 0.2s ease,
+      box-shadow 0.3s ease !important;
+  }
+}
+
 @keyframes stickyCtaMobileRise {
   0% {
     opacity: 0;
