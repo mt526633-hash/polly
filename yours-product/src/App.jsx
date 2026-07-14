@@ -167,7 +167,7 @@ function Header({onMenu,onSearch,onWishlist,onCart,onPlaceholder,wishlistCount,c
         const distanceAfterAnnouncement = announcementHiddenAtY.current === null
           ? 0
           : currentScrollY - announcementHiddenAtY.current;
-        const canHideHeader = chromeStateRef.current.announcementHidden && distanceAfterAnnouncement >= 300;
+        const canHideHeader = chromeStateRef.current.announcementHidden && distanceAfterAnnouncement >= 500;
         const shouldHideHeader = !atTop && (
           (chromeStateRef.current.headerHidden && !scrollingUp) ||
           (movedEnough && scrollingDown && canHideHeader)
