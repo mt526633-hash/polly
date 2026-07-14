@@ -9319,6 +9319,35 @@ header {
   }
 }
 
+/* iPhone Chrome: use one finite scroller so the newsletter is a hard page boundary. */
+@media (max-width: 699px) {
+  html.chrome-ios,
+  html.chrome-ios body,
+  html.chrome-ios #root {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  html.chrome-ios .page {
+    width: 100% !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    min-height: 0 !important;
+    max-height: 100dvh !important;
+    overflow-x: clip !important;
+    overflow-y: auto !important;
+    overscroll-behavior-y: none !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
+  }
+
+  html.chrome-ios.is-page-ending .page {
+    background-color: #e9c48c !important;
+  }
+}
+
 /* Mobile size guide: dynamic viewport, independent scrolling, and GPU-light motion. */
 @media (max-width: 699px) {
   .sg-overlay {
