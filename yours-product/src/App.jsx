@@ -1132,9 +1132,11 @@ export function App() {
     {/* Sticky bottom buy bar */}
       {!wishlistOpen && !searchOpen && !menu && (
         <div className={`sticky-buy-bar sticky-bar-translucent ${showSticky ? 'sticky-visible' : ''} ${isStickySmall ? 'is-small' : ''}`} aria-hidden={!showSticky}>
-          <button className={`free-shipping-btn ${added ? 'added' : ''}`} onClick={() => {setAdded(true); setCartQty(1); setCartOpen(true);}}>
-            {added ? 'ADDED' : 'Free Shipping'}
-          </button>
+          <div className="sticky-cta-motion">
+            <button className={`free-shipping-btn ${added ? 'added' : ''}`} onClick={() => {setAdded(true); setCartQty(1); setCartOpen(true);}}>
+              {added ? 'ADDED' : 'Free Shipping'}
+            </button>
+          </div>
         </div>
       )}
 

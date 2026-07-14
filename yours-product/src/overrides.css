@@ -9536,3 +9536,25 @@ header {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+/* Transform-only mobile rise for the sticky CTA; exit remains an in-place fade. */
+.sticky-cta-motion {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transform: translate3d(0, 0, 0);
+}
+
+@media (max-width: 600px) {
+  .sticky-buy-bar.sticky-visible .sticky-cta-motion {
+    backface-visibility: hidden !important;
+    will-change: transform !important;
+    animation: stickyCtaMobileRise 0.82s cubic-bezier(0.16, 1, 0.3, 1) backwards !important;
+  }
+}
+
+@keyframes stickyCtaMobileRise {
+  from { transform: translate3d(0, calc(100% + 28px), 0); }
+  to { transform: translate3d(0, 0, 0); }
+}
