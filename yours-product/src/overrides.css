@@ -9466,3 +9466,22 @@ header {
     transform: none !important;
   }
 }
+
+/* Keep the liked-page surface opaque from its very first frame. */
+.premium-wishlist-overlay {
+  animation: none !important;
+  opacity: 1 !important;
+}
+
+.premium-wishlist-drawer {
+  min-height: 100dvh !important;
+  background: #fffaf5 !important;
+  opacity: 1 !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+.premium-wishlist-content,
+.premium-wishlist-footer {
+  background: #fffaf5 !important;
+}
