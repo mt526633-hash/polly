@@ -494,11 +494,6 @@ export function App() {
 
     const updateScrollState = () => {
       scrollFrame = 0;
-      const scroller = document.scrollingElement;
-      if (scroller) {
-        const maxScrollY = Math.max(0, scroller.scrollHeight - scroller.clientHeight);
-        if (scroller.scrollTop > maxScrollY + 1) scroller.scrollTop = maxScrollY;
-      }
       const newsletter = document.querySelector('.newsletter');
       const reviews = document.querySelector('.reviews');
       const newsletterNear = newsletter ? newsletter.getBoundingClientRect().top < window.innerHeight * 0.88 : false;
@@ -516,6 +511,7 @@ export function App() {
 
       if (newsletterNear !== footerInViewRef.current) {
         footerInViewRef.current = newsletterNear;
+        document.documentElement.classList.toggle('is-page-ending', newsletterNear);
         setFooterInView(newsletterNear);
       }
       if (nextVisible !== stickyVisibleRef.current) {
@@ -539,12 +535,11 @@ export function App() {
 
     updateScrollState();
     window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('pageshow', handleScroll, { passive: true });
     window.visualViewport?.addEventListener('resize', handleScroll, { passive: true });
     return () => {
       if (scrollFrame) window.cancelAnimationFrame(scrollFrame);
+      document.documentElement.classList.remove('is-page-ending');
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('pageshow', handleScroll);
       window.visualViewport?.removeEventListener('resize', handleScroll);
     };
   }, []);

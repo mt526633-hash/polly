@@ -9795,3 +9795,17 @@ header {
 .page > main > .newsletter:last-child {
   margin-bottom: 0 !important;
 }
+
+/* Let mobile browsers bounce natively, but match the exposed canvas to the page ending. */
+@media (max-width: 699px) {
+  html.is-page-ending,
+  html.is-page-ending body {
+    background-color: #e9c48c !important;
+    background-image: none !important;
+  }
+
+  html.is-page-ending #root,
+  html.is-page-ending .page {
+    background-color: #fff !important;
+  }
+}
