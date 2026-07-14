@@ -484,13 +484,6 @@ export function App() {
   const [activeReview, setActiveReview] = useState(0);
 
   useEffect(() => {
-    const reviewInterval = setInterval(() => {
-      setActiveReview(prev => (prev + 1) % clothingReviews.length);
-    }, 5000);
-    return () => clearInterval(reviewInterval);
-  }, [clothingReviews.length]);
-
-  useEffect(() => {
     const handleScroll = () => {
       const newsletter = document.querySelector('.newsletter');
       const newsletterNear = newsletter ? newsletter.getBoundingClientRect().top < window.innerHeight * 0.88 : false;
@@ -714,22 +707,8 @@ export function App() {
           </div>
         </div>
 
-        <div className="carousel-viewport" style={{ overflow: 'hidden', position: 'relative', width: '100%', touchAction: 'pan-y' }} onPointerDown={e => {
-            const startX = e.clientX;
-            const handlePointerUp = (upE) => {
-              const deltaX = upE.clientX - startX;
-              if (Math.abs(deltaX) > 40) {
-                if (deltaX > 0) {
-                  setActiveReview(prev => (prev === 0 ? clothingReviews.length - 1 : prev - 1));
-                } else {
-                  setActiveReview(prev => (prev === clothingReviews.length - 1 ? 0 : prev + 1));
-                }
-              }
-              window.removeEventListener('pointerup', handlePointerUp);
-            };
-            window.addEventListener('pointerup', handlePointerUp);
-          }}>
-          <div className="carousel-track" style={{ display: 'flex', transition: 'transform 0.4s ease-out', transform: `translateX(-${activeReview * 100}%)` }}>
+        <div className="carousel-viewport" style={{ overflow: 'hidden', position: 'relative', width: '100%' }}>
+          <div className="carousel-track" style={{ display: 'flex', transform: `translate3d(-${activeReview * 100}%, 0, 0)` }}>
             {clothingReviews.map((review, i) => (
               <div key={i} className="review-card" style={{ minWidth: '100%', flex: '0 0 100%', boxSizing: 'border-box' }}>
                 <div className="review-top">
@@ -751,28 +730,25 @@ export function App() {
         <div className="review-carousel-nav" aria-label="Review navigation">
           <button
             className="review-carousel-arrow"
-            onClick={() => setActiveReview(prev => prev === 0 ? clothingReviews.length - 1 : prev - 1)}
+            onClick={() => setActiveReview(prev => Math.max(0, prev - 1))}
+            disabled={activeReview === 0}
             aria-label="Previous review"
           >
             <ChevronLeft aria-hidden="true" />
           </button>
           <div className="carousel-dots" style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
             {clothingReviews.map((_, i) => (
-              <button
+              <span
                 key={i}
-                onClick={() => setActiveReview(i)}
-                style={{
-                  width: '8px', height: '8px', borderRadius: '50%', padding: 0,
-                  background: activeReview === i ? '#111' : '#ccc', border: 'none', transition: 'background 0.3s'
-                }}
-                aria-label={`Go to review ${i + 1}`}
-                aria-current={activeReview === i ? 'true' : undefined}
+                className={`review-dot ${activeReview === i ? 'is-active' : ''}`}
+                aria-hidden="true"
               />
             ))}
           </div>
           <button
             className="review-carousel-arrow"
-            onClick={() => setActiveReview(prev => prev === clothingReviews.length - 1 ? 0 : prev + 1)}
+            onClick={() => setActiveReview(prev => Math.min(clothingReviews.length - 1, prev + 1))}
+            disabled={activeReview === clothingReviews.length - 1}
             aria-label="Next review"
           >
             <ChevronRight aria-hidden="true" />

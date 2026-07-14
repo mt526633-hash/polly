@@ -9393,20 +9393,19 @@ header {
 @media (max-width: 600px) {
   .sticky-buy-bar.sticky-bar-translucent,
   .sticky-buy-bar.sticky-bar-translucent.is-small {
-    transform: translate3d(-50%, 22px, 0) !important;
-    contain: layout paint style !important;
+    overflow: visible !important;
+    transform: translate3d(-50%, 0, 0) !important;
+    will-change: opacity !important;
     transition:
-      opacity 0.3s ease-out,
-      transform 0.46s cubic-bezier(0.22, 1, 0.36, 1),
-      visibility 0s linear 0.46s !important;
+      opacity 0.42s ease-out,
+      visibility 0s linear 0.42s !important;
   }
 
   .sticky-buy-bar.sticky-bar-translucent.sticky-visible,
   .sticky-buy-bar.sticky-bar-translucent.sticky-visible.is-small {
     transform: translate3d(-50%, 0, 0) !important;
     transition:
-      opacity 0.34s ease-out,
-      transform 0.48s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.42s ease-out,
       visibility 0s linear 0s !important;
   }
 
@@ -9414,11 +9413,56 @@ header {
   .sticky-buy-bar.sticky-bar-translucent.is-small .free-shipping-btn {
     backface-visibility: hidden !important;
     -webkit-backface-visibility: hidden !important;
-    contain: layout paint style !important;
+    overflow: hidden !important;
     transition:
-      width 0.64s cubic-bezier(0.22, 1, 0.36, 1),
-      height 0.58s cubic-bezier(0.22, 1, 0.36, 1),
+      width 1.05s cubic-bezier(0.16, 1, 0.3, 1),
+      height 0.9s cubic-bezier(0.16, 1, 0.3, 1),
       background-color 0.2s ease,
       box-shadow 0.24s ease !important;
+  }
+}
+
+/* Manual-only, one-card-at-a-time review motion. */
+.reviews .carousel-viewport {
+  contain: layout paint !important;
+}
+
+.reviews .carousel-track {
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+  will-change: transform !important;
+  transition: transform 0.68s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.carousel-dots .review-dot {
+  display: block !important;
+  width: 7px !important;
+  height: 7px !important;
+  flex: 0 0 auto !important;
+  border-radius: 999px !important;
+  background: rgba(255, 238, 205, 0.28) !important;
+  transform: translate3d(0, 0, 0) !important;
+  transition:
+    width 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.26s ease !important;
+}
+
+.carousel-dots .review-dot.is-active {
+  width: 24px !important;
+  background: #ffe8bc !important;
+}
+
+.review-carousel-arrow:disabled {
+  opacity: 0.34 !important;
+  cursor: default !important;
+  transform: none !important;
+}
+
+@media (hover: none) {
+  .review-carousel-arrow:hover:not(:disabled) {
+    border-color: rgba(255, 238, 205, 0.34) !important;
+    background: rgba(255, 250, 243, 0.055) !important;
+    color: #ffe8bc !important;
+    transform: none !important;
   }
 }
