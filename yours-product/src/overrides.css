@@ -9378,9 +9378,13 @@ header {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .gymshark-cart.sleek-cart .sleek-shipping-banner.is-unlocked::after,
+  .gymshark-cart.sleek-cart .sleek-shipping-banner.is-unlocked::after {
+    display: block !important;
+    animation: premiumShippingBannerSweep 1.45s ease-out 0.16s 1 both !important;
+  }
+
   .gymshark-cart.sleek-cart .sleek-shipping-banner.is-unlocked .sleek-shipping-bar-full::after {
-    animation: none !important;
-    display: none !important;
+    display: block !important;
+    animation: premiumShippingBarSweep 1.45s ease-out 0.24s 1 both !important;
   }
 }
