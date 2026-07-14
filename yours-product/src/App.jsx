@@ -8,7 +8,8 @@ import './touch-gallery.css';
 const CustomAccordion = ({ title, children, defaultOpen = false }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
   return (
-    <div className={`custom-accordion ${isOpen ? 'is-open' : ''}`}>
+    <div className="accordion-reveal-item">
+      <div className={`custom-accordion ${isOpen ? 'is-open' : ''}`}>
       <button className="custom-accordion-header" onClick={() => setIsOpen(!isOpen)}>
         <span>{title}</span>
         <div className="accordion-icon">{isOpen ? '-' : '+'}</div>
@@ -19,6 +20,7 @@ const CustomAccordion = ({ title, children, defaultOpen = false }) => {
             {children}
           </div>
         </div>
+      </div>
       </div>
     </div>
   );
@@ -470,6 +472,8 @@ export function App() {
   const stickyVisibleRef = useRef(false);
   const stickySmallRef = useRef(false);
   const footerInViewRef = useRef(false);
+  const accordionRevealRef = useRef(null);
+  const [accordionsVisible, setAccordionsVisible] = useState(false);
 
   const clothingReviews = [
     { name: "Sarah M.", text: "\"This is officially my new favorite set. The compression is perfect without digging in, and it stays perfectly in place during my HIIT workouts.\"", title: "Obsessed with the fit!", time: "2 DAYS AGO", rating: 5 },
@@ -507,6 +511,23 @@ export function App() {
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const group = accordionRevealRef.current;
+    if (!group) return;
+    if (!('IntersectionObserver' in window)) {
+      setAccordionsVisible(true);
+      return;
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setAccordionsVisible(true);
+        observer.disconnect();
+      }
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    observer.observe(group);
+    return () => observer.disconnect();
   }, []);
 
   // Lock body scroll when overlays are open
@@ -667,7 +688,7 @@ export function App() {
 
 
         {/* Gymshark-style collapsible accordion sections */}
-        <div className="accordion-group">
+        <div ref={accordionRevealRef} className={`accordion-group accordion-reveal-group ${accordionsVisible ? 'is-visible' : ''}`}>
           <CustomAccordion title="Description & Features">
             <p>Shirt Set of 3 pieces {'{'}Bodysuit - Wrap Skirt - Leggings{'}'}</p>
             <p>Model is Wearing size SMALL</p>

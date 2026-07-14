@@ -9485,3 +9485,54 @@ header {
 .premium-wishlist-footer {
   background: #fffaf5 !important;
 }
+
+/* Viewport-timed accordion card reveal: light enough for mobile GPUs. */
+.accordion-reveal-group:not(.is-visible) .accordion-reveal-item {
+  opacity: 0 !important;
+  transform: translate3d(0, 18px, 0) !important;
+}
+
+.accordion-reveal-item {
+  width: 100% !important;
+}
+
+.accordion-reveal-group.is-visible .accordion-reveal-item {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden !important;
+  animation: accordionCardReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards !important;
+}
+
+.accordion-reveal-group.is-visible .accordion-reveal-item:nth-child(1) { animation-delay: 0.04s !important; }
+.accordion-reveal-group.is-visible .accordion-reveal-item:nth-child(2) { animation-delay: 0.11s !important; }
+.accordion-reveal-group.is-visible .accordion-reveal-item:nth-child(3) { animation-delay: 0.18s !important; }
+.accordion-reveal-group.is-visible .accordion-reveal-item:nth-child(4) { animation-delay: 0.25s !important; }
+
+@keyframes accordionCardReveal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accordion-reveal-group:not(.is-visible) .accordion-reveal-item {
+    opacity: 0 !important;
+    transform: none !important;
+  }
+
+  .accordion-reveal-group.is-visible .accordion-reveal-item {
+    animation-name: accordionCardFade !important;
+    animation-duration: 0.36s !important;
+    transform: none !important;
+  }
+}
+
+@keyframes accordionCardFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
