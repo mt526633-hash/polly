@@ -1,13 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { Menu, Search, UserRound, ShoppingBag, Heart, X, ArrowRight, Truck, RefreshCcw, ShieldCheck, Star, ChevronRight, Ruler, ChevronDown, ChevronLeft, Flame, Info, Pause, Play } from 'lucide-react';
+import { Menu, Search, UserRound, ShoppingBag, Heart, X, ArrowRight, Truck, RefreshCcw, Star, ChevronRight, Ruler, ChevronDown, ChevronLeft, Flame, Info, Trash2, Plus} from 'lucide-react';
 import './styles.css';
 import './overrides.css';
-import './premium-fixes.css';
-import './motion.css';
-import './luxury-polish.css';
-import './product-switch.css';
-import './size-guide-fix.css';
-import './matrix-guide.css';
 import './touch-gallery.css';
 
 // Custom Smooth Accordion
@@ -15,9 +9,9 @@ const CustomAccordion = ({ title, children, defaultOpen = false }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
   return (
     <div className={`custom-accordion ${isOpen ? 'is-open' : ''}`}>
-      <button className="custom-accordion-header squish-anim" onClick={() => setIsOpen(!isOpen)}>
+      <button className="custom-accordion-header" onClick={() => setIsOpen(!isOpen)}>
         <span>{title}</span>
-        <ChevronDown className="custom-accordion-arrow" size={16} />
+        <div className="accordion-icon">{isOpen ? '-' : '+'}</div>
       </button>
       <div className="custom-accordion-content-wrapper">
         <div className="custom-accordion-content">
@@ -30,7 +24,7 @@ const CustomAccordion = ({ title, children, defaultOpen = false }) => {
   );
 };
 
-// Scroll-reveal: adds .is-visible when element enters viewport
+// Scroll-reveal: adds .is-visible when element enters viewpor
 function useScrollReveal() {
   const ref = useRef(null);
   useEffect(() => {
@@ -58,19 +52,55 @@ function useScrollReveal() {
 
 const sizes = ['Small','Medium','Large','X-Large','XX-Large'];
 const products = [
-  {name:'Sleek Corset Burkini - Baby Blue', price:'LE 1,899.00 EGP', image:'/assets/baby-blue.jpg',reviews:0,colors:['#6dbfd1','#222','#d7d4c9']},
-  {name:'Rouge Burkini', price:'LE 2,499.00 EGP', image:'/assets/rouge.jpg',reviews:0,colors:['#8e1d27','#1d1d1d']},
-  {name:'Barbie Burkini', price:'LE 2,499.00 EGP', image:'/assets/barbie.jpg',reviews:0,colors:['#d4a7b4','#2d2d2d']},
-  {name:'Aqua Burkini', price:'LE 2,499.00 EGP', image:'/assets/aqua.jpg',reviews:0,colors:['#42bccc','#111']},
-  {name:'Sleek Corset Burkini - Olive', price:'LE 1,899.00 EGP', image:'/assets/olive.jpg',reviews:0,colors:['#6e7455','#111','#ded9c9']},
-  {name:'Sleek Corset Burkini - Burgundy', price:'LE 1,899.00 EGP', image:'/assets/burgundy.jpg',reviews:0,colors:['#692f39','#111','#a9a49d']},
+  {name:'Belted Cotton Shirt', price:'LE 750.00 EGP', image:'https://oodstore.com/cdn/shop/files/photo_2026-04-27_07-43-35.jpg?v=1777265216',reviews:0,colors:['#6dbfd1','#222','#d7d4c9']},
+  {name:'Rouge Shirt', price:'LE 2,499.00 EGP', image:'https://oodstore.com/cdn/shop/files/photo_2026-04-27_07-43-35.jpg?v=1777265216',reviews:0,colors:['#8e1d27','#1d1d1d']},
+  {name:'Barbie Shirt', price:'LE 2,499.00 EGP', image:'https://oodstore.com/cdn/shop/files/photo_2026-04-27_07-43-35.jpg?v=1777265216',reviews:0,colors:['#d4a7b4','#2d2d2d']},
+  {name:'Aqua Shirt', price:'LE 2,499.00 EGP', image:'https://oodstore.com/cdn/shop/files/photo_2026-04-27_07-43-35.jpg?v=1777265216',reviews:0,colors:['#42bccc','#111']},
+  {name:'Belted Cotton Shirt', price:'LE 750.00 EGP', image:'https://oodstore.com/cdn/shop/files/photo_2026-04-27_07-43-35.jpg?v=1777265216',reviews:0,colors:['#6e7455','#111','#ded9c9']},
+  {name:'Belted Cotton Shirt', price:'LE 750.00 EGP', image:'https://oodstore.com/cdn/shop/files/photo_2026-04-27_07-43-35.jpg?v=1777265216',reviews:0,colors:['#692f39','#111','#a9a49d']},
 ];
 
-function Header({onMenu,onSearch,onWishlist,onCart,wishlistCount,cartCount}) {
-  const [msgIndex, setMsgIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(3600); // 1 hour
+const menuCollections = {
+  Women: {
+    eyebrow: 'THE WOMEN\'S EDIT',
+    title: 'Quiet confidence, cut with intention.',
+    feature: 'The shirt collection',
+    links: [
+      ['New arrivals', 'The latest pieces'],
+      ['Shirts & layers', 'Considered everyday dressing'],
+      ['Complete the look', 'Curated pairings'],
+      ['Shop by colour', 'Find your shade'],
+      ['Last pieces', 'Limited availability']
+    ]
+  },
+  Men: {
+    eyebrow: 'THE MEN\'S EDIT',
+    title: 'Relaxed essentials, refined for every day.',
+    feature: 'Modern foundations',
+    links: [
+      ['New arrivals', 'The latest pieces'],
+      ['Shirts & tops', 'Everyday foundations'],
+      ['Relaxed layers', 'Built for versatility'],
+      ['Accessories', 'The finishing details'],
+      ['Last pieces', 'Limited availability']
+    ]
+  },
+  Accessories: {
+    eyebrow: 'THE DETAILS EDIT',
+    title: 'Small details that finish the story.',
+    feature: 'The finishing touch',
+    links: [
+      ['View all', 'The full accessories edit'],
+      ['Bags', 'Made to move with you'],
+      ['Headwear', 'A considered finish'],
+      ['Everyday details', 'Small pieces, lasting use'],
+      ['New releases', 'Just arrived']
+    ]
+  }
+};
+
+function Header({onMenu,onSearch,onWishlist,onCart,onPlaceholder,wishlistCount,cartCount}) {
+  const [timeLeft, setTimeLeft] = useState(10800);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -92,46 +122,95 @@ function Header({onMenu,onSearch,onWishlist,onCart,wishlistCount,cartCount}) {
     "Free standard shipping on orders over LE 2,500"
   ];
 
+  const timeParts = [
+    { label: 'Day', value: Math.floor(timeLeft / 86400) },
+    { label: 'Hour', value: Math.floor((timeLeft % 86400) / 3600) },
+    { label: 'Min', value: Math.floor((timeLeft % 3600) / 60) },
+    { label: 'Sec', value: timeLeft % 60 }
+  ];
+
+  const [chromeState, setChromeState] = useState({
+    announcementHidden: false,
+    headerHidden: false
+  });
+  const chromeStateRef = useRef(chromeState);
+  const lastScrollY = useRef(0);
+  const ticking = useRef(false);
+
   useEffect(() => {
-    if (isPaused) return;
-    const currentDelay = msgIndex === 0 ? 8000 : 3000;
-    const interval = setTimeout(() => {
-      setMsgIndex((prev) => (prev + 1) % messages.length);
-    }, currentDelay);
-    return () => clearTimeout(interval);
-  }, [isPaused, msgIndex, messages.length]);
+    chromeStateRef.current = chromeState;
+  }, [chromeState]);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 200);
+      if (ticking.current) return;
+      ticking.current = true;
+
+      window.requestAnimationFrame(() => {
+        const currentScrollY = window.scrollY;
+        const delta = currentScrollY - lastScrollY.current;
+        const atTop = currentScrollY <= 18;
+        const movedEnough = Math.abs(delta) > 7;
+        const scrollingDown = delta > 0;
+        const scrollingUp = delta < 0;
+        const shouldHideAnnouncement = !atTop && (
+          chromeStateRef.current.announcementHidden || currentScrollY > 170
+        );
+        const shouldHideHeader = !atTop && (
+          (chromeStateRef.current.headerHidden && currentScrollY > 120 && !scrollingUp) ||
+          (movedEnough && scrollingDown && currentScrollY > 230)
+        );
+
+        const nextChromeState = {
+          announcementHidden: atTop ? false : shouldHideAnnouncement,
+          headerHidden: atTop ? false : shouldHideHeader
+        };
+
+        if (
+          nextChromeState.announcementHidden !== chromeStateRef.current.announcementHidden ||
+          nextChromeState.headerHidden !== chromeStateRef.current.headerHidden
+        ) {
+          chromeStateRef.current = nextChromeState;
+          setChromeState(nextChromeState);
+        }
+
+        lastScrollY.current = currentScrollY;
+        ticking.current = false;
+      });
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <div className={`sticky-header-container ${isScrolled ? 'scrolled' : ''}`}>
-      <div className={`announcement ${isScrolled ? 'announcement-hidden' : ''}`}>
-        <div className="announcement-msg-wrapper">
-          <a href="#" key={msgIndex} className="announcement-link fade-in-msg" onClick={(e) => { e.preventDefault(); window.scrollTo({top: 0, behavior: 'smooth'}); }}>
-            {msgIndex === 0 && <span className="discount-pulse"></span>}
-            {messages[msgIndex]}
+    <div className={`sticky-header-container ${chromeState.announcementHidden ? 'announcement-gone' : ''} ${chromeState.headerHidden ? 'header-hidden' : ''}`}>
+      <div className={`announcement ${chromeState.announcementHidden ? 'announcement-hidden' : ''}`}>
+        <div className="announcement-content">
+          <a href="#" className="announcement-offer" onClick={(e) => { e.preventDefault(); onPlaceholder(); }}>
+            <span className="announcement-kicker">SPECIAL OFFER</span>
+            <span className="announcement-copy">Free delivery for 48 hours only + 50% off</span>
           </a>
+          <div className="announcement-countdown" aria-label="Offer countdown">
+            {timeParts.map((part, index) => (
+              <div className="announcement-time-block" key={part.label}>
+                {index > 0 && <span className="announcement-separator">:</span>}
+                <span className="announcement-number">{part.value.toString().padStart(2, '0')}</span>
+                <span className="announcement-label">{part.label}</span>
+              </div>
+            ))}
+          </div>
         </div>
-        <button 
-          className="announcement-pause-btn" 
-          onClick={() => setIsPaused(!isPaused)}
-          aria-label={isPaused ? "Play announcements" : "Pause announcements"}
-        >
-          {isPaused ? <Play size={11}/> : <Pause size={11}/>} 
-        </button>
       </div>
       <header>
-        <button aria-label="Open menu" onClick={onMenu}><Menu/></button>
-        <button aria-label="Search" onClick={onSearch}><Search/></button>
-        <img className="logo" src="/assets/logo.png" alt="Yours" />
-        <button aria-label="Love list" className="love" onClick={onWishlist}><Heart/><b>{wishlistCount}</b></button>
-        <button aria-label="Bag" className="bag" onClick={onCart}><ShoppingBag/><b>{cartCount}</b></button>
+        <div className="header-left">
+          <button aria-label="Open menu" onClick={onMenu}><Menu/></button>
+          <button aria-label="Search" onClick={onSearch}><Search/></button>
+        </div>
+        <h1 className="logo" style={{margin:0, fontSize: "20px", fontWeight: "bold", letterSpacing: "1px", textAlign: "center"}}>OODSTORE</h1>
+        <div className="header-right">
+          <button aria-label="Love list" className="love" onClick={onWishlist}><Heart/><b>{wishlistCount}</b></button>
+          <button aria-label="Bag" className="bag" onClick={onCart}><ShoppingBag/><b>{cartCount}</b></button>
+        </div>
       </header>
     </div>
   );
@@ -139,47 +218,191 @@ function Header({onMenu,onSearch,onWishlist,onCart,wishlistCount,cartCount}) {
 
 function Stars({count=0}) { return <div className={`stars ${count===0?'empty-stars':''}`}><span>{[0,1,2,3,4].map(i=><Star key={i}/>)}</span><small>{count===0?'No reviews yet':`(${count})`}</small></div> }
 
-function ProductRail({title, items, wishlist, toggleWishlist, onRestrictedClick, animClass = "reveal-up"}) {
+function GetTheLook({ product, onPlaceholder }) {
+  const ref = useScrollReveal();
+  return (
+    <section className="get-the-look-section reveal-up" ref={ref}>
+      <div className="gtl-card" role="button" tabIndex={0} aria-label="View curated look" onClick={onPlaceholder} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onPlaceholder(); } }}>
+        <div className="gtl-header">
+          <div className="gtl-title">
+            <span className="gtl-kicker">Curated edit</span>
+            <strong>Get the look</strong>
+            <span className="gtl-count">1 piece selected</span>
+          </div>
+          <span className="gtl-arrow" aria-hidden="true"><ChevronRight size={16} /></span>
+        </div>
+        <div className="gtl-body">
+          <div className="gtl-image-frame">
+            <img src={product.image} alt={product.name} />
+          </div>
+          <div className="gtl-copy">
+            <p className="gtl-product-name">{product.name}</p>
+            <p className="gtl-product-note">Styled for refined everyday coverage</p>
+            <p className="gtl-product-price">{product.price}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ProductRail({title, subtitle, items, wishlist, toggleWishlist, onRestrictedClick, animClass = "reveal-up"}) {
   const ref = useScrollReveal();
   const [swiped, setSwiped] = useState(false);
+  const [glideDirection, setGlideDirection] = useState('');
   const railRef = useRef(null);
+  const glideTimer = useRef(null);
+  const glideFrame = useRef(null);
+  const scrollRail = (direction) => {
+    const rail = railRef.current;
+    if (!rail) return;
+    window.clearTimeout(glideTimer.current);
+    window.cancelAnimationFrame(glideFrame.current);
+    setGlideDirection(direction > 0 ? 'is-gliding-next' : 'is-gliding-prev');
+    const start = rail.scrollLeft;
+    const max = rail.scrollWidth - rail.clientWidth;
+    const cards = Array.from(rail.querySelectorAll('.gymshark-card'));
+    const cardPositions = cards.map(card => card.offsetLeft - rail.offsetLeft);
+    const currentIndex = cardPositions.reduce((closestIndex, position, index) => (
+      Math.abs(position - start) < Math.abs(cardPositions[closestIndex] - start) ? index : closestIndex
+    ), 0);
+    const targetIndex = Math.max(0, Math.min(cards.length - 1, currentIndex + direction));
+    const target = Math.max(0, Math.min(max, cardPositions[targetIndex] ?? start));
+    const duration = 760;
+    const startedAt = performance.now();
+    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
 
-  return <section className={`rail-section ${animClass}`} ref={ref}>
-    <div className="section-title">
-      <h2>{title}</h2>
-      <div className={`swipe-hint-container ${swiped ? 'hint-hidden' : ''}`}>
-        <span className="swipe-text-hint">Swipe left</span>
-        <button aria-label={`View all ${title}`} className="swipe-arrow-btn">
-          <ArrowRight className="swipe-arrow-anim"/>
-        </button>
+    const step = (now) => {
+      const progress = Math.min((now - startedAt) / duration, 1);
+      rail.scrollLeft = start + (target - start) * easeOutCubic(progress);
+      if (progress < 1) {
+        glideFrame.current = window.requestAnimationFrame(step);
+      } else {
+        glideTimer.current = window.setTimeout(() => setGlideDirection(''), 140);
+      }
+    };
+
+    glideFrame.current = window.requestAnimationFrame(step);
+  };
+
+  useEffect(() => {
+    return () => {
+      window.clearTimeout(glideTimer.current);
+      window.cancelAnimationFrame(glideFrame.current);
+    };
+  }, []);
+
+  return <section className={`rail-section premium-recommendations ${animClass}`} ref={ref} style={{ width: '100%', overflow: 'visible' }}>
+    <div className="premium-rail-shell" style={{ paddingLeft: '16px', boxSizing: 'border-box' }}>
+      <div className="section-title" style={{ padding: 0, marginBottom: '16px' }}>
+        <div className="section-title-left">
+          <span className="premium-rail-kicker">Selected for you</span>
+          <h2 style={{ fontSize: '15px', fontWeight: 800, margin: '0 0 2px 0', textTransform: 'uppercase', letterSpacing: '0.02em', color: '#000' }}>{title}</h2>
+          {subtitle && <p className="section-subtitle" style={{ fontSize: '12px', color: '#666', margin: 0 }}>{subtitle}</p>}
+        </div>
+        <div className="premium-rail-controls" aria-label="Scroll recommendations">
+          <button type="button" onClick={() => scrollRail(-1)} aria-label="Previous recommendations"><ChevronLeft size={16} /></button>
+          <button type="button" onClick={() => scrollRail(1)} aria-label="Next recommendations"><ChevronRight size={16} /></button>
+        </div>
       </div>
-    </div>
-    <div className="rail" ref={railRef} onScroll={() => { if(!swiped) setSwiped(true); }}>
-      {items.map((p,i)=><article className="card" key={`${title}-${i}`}>
-        <div className="card-image"><img src={p.image} alt={p.name} onClick={onRestrictedClick} style={{cursor:'pointer'}} draggable={false} /><button className={wishlist.includes(p.name)?'saved':''} onClick={()=>toggleWishlist(p)} aria-label={`Save ${p.name}`}><Heart/></button></div>
-        <div className="card-copy"><div><p className="brand">YOURS</p><h3 onClick={onRestrictedClick} style={{cursor:'pointer'}}>{p.name}</h3></div><button className="quick-bag" onClick={onRestrictedClick} aria-label={`Quick add ${p.name}`}><ShoppingBag/></button></div>
-        <p className="card-price">{p.price}</p><div className="swatches">{p.colors.map(c=><i style={{background:c}} key={c}></i>)}{p.colors.length>2&&<small>+{p.colors.length-2}</small>}</div><Stars count={p.reviews}/>
-      </article>)}
+      <div className={`rail ${glideDirection}`} ref={railRef} onScroll={() => { if(!swiped) setSwiped(true); }} style={{ display: 'flex', overflowX: 'auto', gap: '12px', padding: 0, width: '100%', boxSizing: 'border-box' }}>
+        {items.map((p,i)=><article className="card gymshark-card" key={`${title}-${i}`} style={{ flex: '0 0 calc(50% - 6px)', minWidth: '140px', maxWidth: '220px', padding: 0 }}>
+          <div className="card-image" style={{ position: 'relative', width: '100%', height: 'auto', aspectRatio: '3/4', marginBottom: '8px', background: '#f4f4f4', borderRadius: '4px', overflow: 'hidden' }}>
+            <img src={p.image} alt={p.name} onClick={onRestrictedClick} style={{cursor:'pointer', width: '100%', height: '100%', objectFit: 'cover', display: 'block'}} draggable={false} />
+            {i === 0 && <span className="gymshark-new-badge">NEW</span>}
+            <button className={`gymshark-heart ${wishlist.includes(p.name)?'saved':''}`} onClick={()=>toggleWishlist(p)} aria-label={`Save ${p.name}`}><Heart size={16}/></button>
+          </div>
+          <div className="card-copy gymshark-copy" style={{ display: 'flex', flexDirection: 'column', padding: '0 4px', margin: 0 }}>
+            <h3 onClick={onRestrictedClick} style={{cursor:'pointer', fontSize: '13px', fontWeight: 500, margin: '0 0 4px 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%', color: '#111'}}>{p.name}</h3>
+            <p className="gymshark-color" style={{ fontSize: '12px', color: '#666', margin: '0 0 6px 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>{i===0?'Black':'Super-Set Pink/Focus Pink'}</p>
+            <p className="card-price gymshark-price" style={{ fontSize: '13px', fontWeight: 800, margin: 0, color: '#111' }}>{p.price}</p>
+          </div>
+        </article>)}
+      </div>
     </div>
   </section>
 }
 
 function SizeGuide({close, currentSize, setSize}) {
   const [guideSize,setGuideSize]=useState(currentSize || 'Small');
-  const [unit,setUnit]=useState('kg');
-  const rows=[['Small','S',50,55],['Medium','M',55,60],['Large','L',60,65],['X-Large','XL',65,70],['XX-large','XXL',70,75]];
-  const range=(r)=>unit==='kg'?`${r[2]}–${r[3]}`:`${Math.round(r[2]*2.20462)}–${Math.round(r[3]*2.20462)}`;
-  const selected=rows.find(r=>r[0]===guideSize);
-  return <div className="overlay" onClick={close}><div className="sheet matrix-guide" onClick={e=>e.stopPropagation()}>
-    <div className="matrix-close"><button aria-label="Close size guide" onClick={close}><X/></button></div>
-    <div className="matrix-intro"><p>YOURS BURKINI FIT</p><h2>Find your size</h2><span>Choose using the exact weight guide published for this product.</span></div>
-    <div className="unit-toggle" aria-label="Weight unit"><button className={unit==='kg'?'active':''} onClick={()=>setUnit('kg')}>KG</button><button className={unit==='lb'?'active':''} onClick={()=>setUnit('lb')}>LB</button></div>
-    <div className="matrix-label">RECOMMENDED WEIGHT</div>
-    <div className="size-matrix"><div className="matrix-corner">SIZE</div><div className="matrix-heading">RANGE <small>{unit.toUpperCase()}</small></div><div className="matrix-heading">SELECT</div>{rows.map(r=><button className={`matrix-row ${guideSize===r[0]?'active':''}`} onClick={()=>setGuideSize(r[0])} key={r[0]}><strong>{r[1]}</strong><span>{range(r)} {unit}</span><i>{guideSize===r[0]?'SELECTED':'CHOOSE'}</i></button>)}</div>
-    <div className="matrix-product"><img src="/assets/grey-2.jpg" alt="Sleek Corset Burkini fit reference"/><div><p>SLEEK CORSET BURKINI</p><h3>Three-piece coverage</h3><span>Bodysuit, wrap skirt and leggings. Model wears size Small.</span></div></div>
-    <div className="matrix-result"><span>YOUR SELECTION</span><strong>{selected[1]}</strong><p>{range(selected)} {unit}</p></div>
-    <button className="close-sheet matrix-use" onClick={() => { setSize?.(selected[0]); close(); }}>USE SIZE {selected[1]}</button>
-  </div></div>
+  const [unit,setUnit]=useState('CM');
+
+  const rows = [
+    ['Small', 'S', 89, 92],
+    ['Medium', 'M', 94, 97],
+    ['Large', 'L', 99, 102],
+    ['X-Large', 'XL', 104, 107],
+    ['XX-Large', 'XXL', 109, 112]
+  ];
+
+  const range = (r) => {
+    if (unit === 'CM') return `${r[2]}-${r[3]}`;
+    return `${Math.round(r[2]*0.393701)}-${Math.round(r[3]*0.393701)}`;
+  };
+
+  const selected = rows.find(r => r[0] === guideSize) || rows[0];
+
+  return <div className="overlay sg-overlay" onClick={close}>
+    <div className="sg-drawer" onClick={e=>e.stopPropagation()}>
+      <div className="sg-header">
+        <h2>SIZE GUIDE</h2>
+        <button className="sg-close" onClick={close}><X size={24} strokeWidth={1} /></button>
+      </div>
+
+      <div className="sg-content">
+        <p className="sg-subtitle">Belted Cotton Shirt</p>
+
+        <div className="sg-toggle-wrap">
+          <div className="sg-toggle">
+            <div className="sg-toggle-bg" style={{ transform: unit === 'CM' ? 'translateX(100%)' : 'translateX(0)' }}></div>
+            <button className={unit === 'IN' ? 'active' : ''} onClick={() => setUnit('IN')}>INCHES</button>
+            <button className={unit === 'CM' ? 'active' : ''} onClick={() => setUnit('CM')}>CENTIMETERS</button>
+          </div>
+        </div>
+
+        <div className="sg-table">
+          <div className="sg-table-head">
+            <span>SIZE</span>
+            <span>BUST</span>
+            <span></span>
+          </div>
+          <div className="sg-table-body">
+            {rows.map(r => (
+              <div
+                key={r[0]}
+                className={`sg-row ${selected[0]===r[0] ? 'active' : ''}`}
+                onClick={() => setGuideSize(r[0])}
+              >
+                <strong>{r[1]}</strong>
+                <span>{range(r)} {unit}</span>
+                <div className="sg-radio">
+                  <div className="sg-radio-inner"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="sg-footer-info">
+          <img src="https://oodstore.com/cdn/shop/files/photo_2026-04-27_07-43-35.jpg?v=1777265216" alt="Fit ref" />
+          <div className="sg-fit-text">
+            <h3>FIT NOTES</h3>
+            <p>Regular fit. Model is 175cm/5'9" and wears size S.</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="sg-sticky-footer">
+        <div className="sg-selection-text">
+          <span>SELECTED</span>
+          <strong>{selected[1]} ({range(selected)} {unit})</strong>
+        </div>
+        <button className="sg-use-btn" onClick={() => { setSize?.(selected[0]); close(); }}>
+          CONFIRM SIZE
+        </button>
+      </div>
+    </div>
+  </div>
 }
 
 function RatingScale({label,left='Runs Small',right='Runs Large',value=50,onChange}) { return <label className="rating-scale"><span>{label}</span><input aria-label={label} type="range" min="0" max="100" value={value} onChange={e=>onChange?.(+e.target.value)}/><small><i>{left}</i><i>True to Size</i><i>{right}</i></small></label> }
@@ -203,9 +426,9 @@ function ReviewScale({label, left, right, value}) {
   );
 }
 
-function ReviewForm({close}) {
+function ReviewForm({close, onPlaceholder}) {
   const [fit,setFit]=useState(50); const [quality,setQuality]=useState(85); const [design,setDesign]=useState(85); const [rating,setRating]=useState(0);
-  return <div className="overlay review-overlay" onClick={close}><form className="review-form" onClick={e=>e.stopPropagation()} onSubmit={e=>{e.preventDefault();close()}}>
+  return <div className="overlay review-overlay" onClick={close}><form className="review-form" onClick={e=>e.stopPropagation()} onSubmit={e=>{e.preventDefault();close();onPlaceholder?.()}}>
     <div className="sheet-head review-form-head"><div><p>CUSTOMER REVIEW</p><h2>Share your experience</h2></div><button type="button" aria-label="Close review form" onClick={close}><X/></button></div>
     <section className="rating-block"><p>YOUR RATING</p><div className="review-stars" aria-label="Choose rating">{[1,2,3,4,5].map(n=><button className={n<=rating?'active':''} onClick={()=>setRating(n)} type="button" aria-label={`${n} stars`} key={n}><Star/></button>)}</div></section>
     <div className="review-fields"><label>Review title<input required placeholder="Sum up your experience"/></label><label>Your review<textarea required placeholder="Tell us about the fit, quality and design"/></label></div>
@@ -225,21 +448,44 @@ export function App() {
   const [expertOpen, setExpertOpen] = useState(false);
   const [menuTab, setMenuTab] = useState('Women');
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [cartOpen, setCartOpen] = useState(false);
   const [cartQty, setCartQty] = useState(1);
   const [discountCode, setDiscountCode] = useState('');
   const [discountApplied, setDiscountApplied] = useState(false);
-  const [cartTab, setCartTab] = useState('bag');
   const [restrictedMsg, setRestrictedMsg] = useState(false);
+  const [isStickySmall, setIsStickySmall] = useState(false);
+
+  const clothingReviews = [
+    { name: "Sarah M.", text: "\"This is officially my new favorite set. The compression is perfect without digging in, and it stays perfectly in place during my HIIT workouts.\"", title: "Obsessed with the fit!", time: "2 DAYS AGO", rating: 5 },
+    { name: "Jessica T.", text: "\"The seamless design really contours nicely. I was worried about the lighter color being see-through but it is 100% squat proof. Buying in black next!\"", title: "So flattering", time: "1 WEEK AGO", rating: 5 },
+    { name: "Amanda K.", text: "\"Finally found leggings that don't roll down at the waist! The material is incredibly soft and breathable. Worth every penny.\"", title: "Doesn't roll down", time: "2 WEEKS AGO", rating: 5 },
+    { name: "Rachel L.", text: "\"I get compliments every time I wear this set to the gym. The color is exactly as pictured and it holds up great in the wash.\"", title: "Amazing color and quality", time: "1 MONTH AGO", rating: 4 },
+    { name: "Michelle B.", text: "\"The sports bra offers amazing support without being too restrictive. Perfect for both weightlifting and running.\"", title: "Great support", time: "1 MONTH AGO", rating: 5 },
+    { name: "Nicole W.", text: "\"Best activewear purchase this year. The fabric feels premium and it really wicks away sweat during intense sessions.\"", title: "Premium feel", time: "2 MONTHS AGO", rating: 5 },
+    { name: "Lauren C.", text: "\"Love the subtle branding and the overall aesthetic. It's comfortable enough to wear all day, not just for workouts.\"", title: "Versatile and cute", time: "2 MONTHS AGO", rating: 4 },
+    { name: "Emily S.", text: "\"The fit is incredibly true to size. It hugs all the right places and gives me so much confidence in the gym!\"", title: "True to size", time: "3 MONTHS AGO", rating: 5 }
+  ];
+  const [activeReview, setActiveReview] = useState(0);
+
+  useEffect(() => {
+    const reviewInterval = setInterval(() => {
+      setActiveReview(prev => (prev + 1) % clothingReviews.length);
+    }, 5000);
+    return () => clearInterval(reviewInterval);
+  }, [clothingReviews.length]);
 
   useEffect(() => {
     const handleScroll = () => {
       const newsletter = document.querySelector('.newsletter');
       const newsletterNear = newsletter ? newsletter.getBoundingClientRect().top < window.innerHeight * 0.88 : false;
+      const scrollY = window.scrollY;
       setFooterInView(newsletterNear);
-      setShowSticky(window.scrollY > 756 && !newsletterNear);
+      setShowSticky(scrollY > 720);
+      setIsStickySmall(scrollY > 880);
     };
-    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -252,6 +498,32 @@ export function App() {
     }
     return () => { document.body.style.overflow = ''; };
   }, [menu, guide, searchOpen, cartOpen, expertOpen, reviewForm, lightboxImg, wishlistOpen, restrictedMsg]);
+
+  useEffect(() => {
+    if (!searchOpen) return undefined;
+    const closeSearch = (event) => {
+      if (event.key === 'Escape') setSearchOpen(false);
+    };
+    window.addEventListener('keydown', closeSearch);
+    return () => window.removeEventListener('keydown', closeSearch);
+  }, [searchOpen]);
+
+  useEffect(() => {
+    if (!menu) return undefined;
+    const closeMenu = (event) => {
+      if (event.key === 'Escape') setMenu(false);
+    };
+    window.addEventListener('keydown', closeMenu);
+    return () => window.removeEventListener('keydown', closeMenu);
+  }, [menu]);
+
+  useEffect(() => {
+    if (!menu) return;
+    const frame = window.requestAnimationFrame(() => {
+      document.querySelector('.editorial-menu-scroll')?.scrollTo({ top: 0, behavior: 'auto' });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [menu, menuTab]);
 
   // Global drag-to-scroll for all horizontally scrollable elements
   useEffect(() => {
@@ -292,45 +564,97 @@ export function App() {
   }, []);
 
   const toggleWishlist=(p)=>setWishlist(w=>w.some(x=>x.name===p.name)?w.filter(x=>x.name!==p.name):[...w,p]);
+  const searchMatches = searchQuery.trim()
+    ? products.filter(product => product.name.toLowerCase().includes(searchQuery.trim().toLowerCase()))
+    : products.slice(0, 4);
   return <div className="page">
-    <Header onMenu={()=>setMenu(true)} onSearch={() => setSearchOpen(true)} onWishlist={()=>{setCartTab('wishlist');setCartOpen(true);}} onCart={() => {setCartTab('bag');setCartOpen(true);}} wishlistCount={wishlist.length} cartCount={added ? cartQty : 0}/>
+    <Header onMenu={()=>setMenu(true)} onSearch={() => setSearchOpen(true)} onWishlist={()=>setWishlistOpen(true)} onCart={() => setCartOpen(true)} onPlaceholder={() => setRestrictedMsg(true)} wishlistCount={wishlist.length} cartCount={added ? cartQty : 0}/>
     <main>
-      <div className="breadcrumbs">Home / Swim / Burkinis</div>
-      <div className="gallery" onPointerDown={e=>setSwipeStart(e.clientX)} onPointerUp={e=>{if(swipeStart===null)return;const delta=e.clientX-swipeStart;if(Math.abs(delta)>42)setSlide(current=>delta<0?Math.min(1,current+1):Math.max(0,current-1));setSwipeStart(null)}} onPointerCancel={()=>setSwipeStart(null)}>
-        <div className="gallery-track" style={{transform:`translateX(-${slide*100}%)`}}>{[1,2].map(n=><img key={n} className="skeleton-pulse" onLoad={(e)=>e.target.classList.remove('skeleton-pulse')} src={`/assets/grey-${n}.jpg`} alt={`Sleek Corset Burkini - Grey view ${n}`} onClick={()=>setLightboxImg(`/assets/grey-${n}.jpg`)} style={{cursor:'zoom-in'}} draggable={false} />)}</div>
-        <div className="gallery-ui"><span>{slide+1} / 2</span><div>{[0,1].map(n=><button key={n} aria-label={`Image ${n+1}`} onClick={()=>setSlide(n)} className={slide===n?'active':''}></button>)}</div></div>
-      </div>
-      <section className="product-info">
-        <p className="eyebrow product-badge">DESIGNED FOR CONFIDENT COVERAGE</p><h1>Sleek Corset Burkini - Grey</h1><p className="price">LE 1,899.00 EGP</p><p className="preorder">PRE-ORDER · 10–15 WORKING DAYS</p>
-        <div className="size-head-ref">
-          <span>Select a size</span>
-          <button className="size-guide-btn" onClick={()=>setGuide(true)}>
-            <Ruler size={16} />
-            <span>Size Guide</span>
+      <div className="breadcrumbs">Home / Swim / Shirts</div>
+      <div className="gallery" onPointerDown={e=>setSwipeStart(e.clientX)} onPointerUp={e=>{if(swipeStart===null)return;const delta=e.clientX-swipeStart;if(Math.abs(delta)>42)setSlide(current=>delta<0?Math.min(2,current+1):Math.max(0,current-1));setSwipeStart(null)}} onPointerCancel={()=>setSwipeStart(null)}>
+        <div className="gallery-track" style={{transform:`translateX(-${slide*100}%)`}}>
+          {["https://cdn.shopify.com/s/files/1/0722/0166/6721/files/photo_2026-04-27_07-43-35.jpg?v=1777265216","https://cdn.shopify.com/s/files/1/0722/0166/6721/files/photo_2026-04-27_07-43-27.jpg?v=1777265222","https://cdn.shopify.com/s/files/1/0722/0166/6721/files/photo_2026-04-27_07-43-48.jpg?v=1777265180"].map((url, i) => (
+            <img
+              key={i}
+              className="skeleton-pulse"
+              onLoad={(e)=>e.target.classList.remove('skeleton-pulse')}
+              src={url}
+              alt={`Product view ${i}`}
+              onClick={()=>setLightboxImg(url)}
+              style={{cursor:'zoom-in'}}
+              draggable={false}
+            />
+          ))}
+        </div>
+        <div className="gallery-thumbnails-wrapper" style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '4px 12px', justifyContent: 'center' }}>
+          <button
+            onClick={() => setSlide(s => Math.max(0, s - 1))}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '50%', border: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.08)', background: '#fff', color: '#111', cursor: 'pointer', flexShrink: 0, opacity: slide === 0 ? 0.2 : 1, transition: 'opacity 0.3s ease', zIndex: 2 }}
+            disabled={slide === 0}
+            aria-label="Previous image"
+          >
+            <ChevronLeft size={16} strokeWidth={2.5} />
+          </button>
+          <div className="gallery-thumbnails" style={{ display: 'flex', gap: '12px' }}>
+            {["https://cdn.shopify.com/s/files/1/0722/0166/6721/files/photo_2026-04-27_07-43-35.jpg?v=1777265216","https://cdn.shopify.com/s/files/1/0722/0166/6721/files/photo_2026-04-27_07-43-27.jpg?v=1777265222","https://cdn.shopify.com/s/files/1/0722/0166/6721/files/photo_2026-04-27_07-43-48.jpg?v=1777265180"].map((url, i) => (
+              <button
+                key={i}
+                onClick={() => setSlide(i)}
+                onPointerEnter={() => setSlide(i)}
+                style={{
+                  flex: '0 1 auto',
+                  width: '72px',
+                  height: '72px',
+                  padding: '2px',
+                  border: slide === i ? '1px solid #111' : '1px solid transparent',
+                  borderRadius: '6px',
+                  background: 'transparent',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                  opacity: slide === i ? 1 : 0.6,
+                  transform: slide === i ? 'scale(1)' : 'scale(0.96)',
+                }}
+                aria-label={`Thumbnail ${i+1}`}
+              >
+                <img src={url} alt={`Thumbnail ${i+1}`} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }} />
+              </button>
+            ))}
+          </div>
+          <button
+            onClick={() => setSlide(s => Math.min(2, s + 1))}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '50%', border: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.08)', background: '#fff', color: '#111', cursor: 'pointer', flexShrink: 0, opacity: slide === 2 ? 0.2 : 1, transition: 'opacity 0.3s ease', zIndex: 2 }}
+            disabled={slide === 2}
+            aria-label="Next image"
+          >
+            <ChevronRight size={16} strokeWidth={2.5} />
           </button>
         </div>
-        <div className="size-selector-card">
-          {['Small','Medium','Large','X-Large','XX-large'].map(s=><button className={size===s?'selected':''} onClick={()=>setSize(s)} key={s}>{s === 'Small' ? 'S' : s === 'Medium' ? 'M' : s === 'Large' ? 'L' : s === 'X-Large' ? 'XL' : 'XXL'}</button>)}
+      </div>
+      <section className="product-info">
+        <p className="eyebrow product-badge">DESIGNED FOR CONFIDENT COVERAGE</p><h1>Belted Cotton Shirt</h1><p className="price">LE 750.00 EGP</p><p className="preorder">PRE-ORDER · 10–15 WORKING DAYS</p>
+        <div className="size-selector-new-wrap">
+          <div className="size-header-new">
+            <span>Size: <strong>{size === 'Small' ? 'S' : size === 'Medium' ? 'M' : size === 'Large' ? 'L' : size === 'X-Large' ? 'XL' : size === 'XX-Large' ? 'XXL' : ''}</strong></span>
+            <button className="size-guide-btn" onClick={()=>setGuide(true)}>Size Guide</button>
+          </div>
+          <div className="size-options-new">
+            {['Small','Medium','Large','X-Large','XX-large'].map(s=><button className={size===s?'selected':''} onClick={()=>setSize(s)} key={s}>{s === 'Small' ? 'S' : s === 'Medium' ? 'M' : s === 'Large' ? 'L' : s === 'X-Large' ? 'XL' : 'XXL'}</button>)}
+          </div>
         </div>
-        <button className={`add squish-anim ${added?'added':''}`} onClick={()=>{setAdded(true); setCartQty(1); setCartOpen(true);}}>{added?'ADDED TO BAG':'PRE-ORDER — LE 1,899.00 EGP'}</button>
-        <div className="product-urgency-msg urgency-glow" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
-          <Flame size={14} className="urgency-icon urgency-flame-anim" />
-          <span><b className="urgency-text-glow">Selling fast!</b> 8 people have this in their cart right now.</span>
-        </div>
-        
-        <button ref={useScrollReveal()} className="ask-expert-inline reveal-shimmer" onClick={(e) => { e.stopPropagation(); e.preventDefault(); setExpertOpen(true); }}>
-          ASK AN EXPERT
-        </button>
+        <button className={`add squish-anim ${added?'added':''}`} onClick={()=>{setAdded(true); setCartQty(1); setCartOpen(true);}}>{added?'ADDED TO BAG':'PRE-ORDER — LE 750.00 EGP'}</button>
+
+
+
 
         {/* Gymshark-style collapsible accordion sections */}
         <div className="accordion-group">
-          <CustomAccordion title="Description & Features" defaultOpen={true}>
-            <p>Burkini Set of 3 pieces {'{'}Bodysuit - Wrap Skirt - Leggings{'}'}</p>
+          <CustomAccordion title="Description & Features">
+            <p>Shirt Set of 3 pieces {'{'}Bodysuit - Wrap Skirt - Leggings{'}'}</p>
             <p>Model is Wearing size SMALL</p>
           </CustomAccordion>
 
           <CustomAccordion title="Size & Fit">
-            <p>Burkinis Size Chart</p>
+            <p>Shirts Size Chart</p>
             <ul>
               <li><strong>S:</strong> 50–55 kg</li><li><strong>M:</strong> 55–60 kg</li><li><strong>L:</strong> 60–65 kg</li><li><strong>XL:</strong> 65–70 kg</li><li><strong>XXL:</strong> 70–75 kg</li>
             </ul>
@@ -345,13 +669,13 @@ export function App() {
           <CustomAccordion title="Policy">
             <p>Check if the order suits you before paying. If not, return it with the courier on the spot and only pay shipping fees.</p>
             <ul>
-              <li>No returns after paying; exchanges within 14 days.</li><li>Customers cover additional costs.</li><li><strong>Burkinis:</strong> once the courier leaves, no exchange or refund.</li><li>No returns or exchanges on sale items.</li>
+              <li>No returns after paying; exchanges within 14 days.</li><li>Customers cover additional costs.</li><li><strong>Shirts:</strong> once the courier leaves, no exchange or refund.</li><li>No returns or exchanges on sale items.</li>
             </ul>
           </CustomAccordion>
         </div>
       </section>
-      <ProductRail title="More You'll Love" items={products.slice(0,4)} wishlist={wishlist.map(x=>x.name)} toggleWishlist={toggleWishlist} onRestrictedClick={() => setRestrictedMsg(true)} animClass="reveal-up"/>
-      <ProductRail title="Recently Viewed" items={[products[1],products[3],products[0]]} wishlist={wishlist.map(x=>x.name)} toggleWishlist={toggleWishlist} onRestrictedClick={() => setRestrictedMsg(true)} animClass="reveal-up"/>
+      <GetTheLook product={products[1]} onPlaceholder={() => setRestrictedMsg(true)} />
+      <ProductRail title="YOU MIGHT LIKE TOO" subtitle="We think these products pair perfectly." items={products.slice(0,4)} wishlist={wishlist.map(x=>x.name)} toggleWishlist={toggleWishlist} onRestrictedClick={() => setRestrictedMsg(true)} animClass="reveal-up"/>
       <section className="reviews reveal-scale" ref={useScrollReveal()}>
         <p className="reviews-kicker">REAL RESULTS</p>
         <h2>Loved by 10k+ Women</h2>
@@ -362,27 +686,75 @@ export function App() {
             <p>Based on 1,248 reviews</p>
           </div>
         </div>
-        <div className="review-card">
-          <div className="review-top">
-            <div className="stars"><Star/><Star/><Star/><Star/><Star/></div>
-            <span>2 DAYS AGO</span>
+
+        <div className="carousel-viewport" style={{ overflow: 'hidden', position: 'relative', width: '100%', touchAction: 'pan-y' }} onPointerDown={e => {
+            const startX = e.clientX;
+            const handlePointerUp = (upE) => {
+              const deltaX = upE.clientX - startX;
+              if (Math.abs(deltaX) > 40) {
+                if (deltaX > 0) {
+                  setActiveReview(prev => (prev === 0 ? clothingReviews.length - 1 : prev - 1));
+                } else {
+                  setActiveReview(prev => (prev === clothingReviews.length - 1 ? 0 : prev + 1));
+                }
+              }
+              window.removeEventListener('pointerup', handlePointerUp);
+            };
+            window.addEventListener('pointerup', handlePointerUp);
+          }}>
+          <div className="carousel-track" style={{ display: 'flex', transition: 'transform 0.4s ease-out', transform: `translateX(-${activeReview * 100}%)` }}>
+            {clothingReviews.map((review, i) => (
+              <div key={i} className="review-card" style={{ minWidth: '100%', flex: '0 0 100%', boxSizing: 'border-box' }}>
+                <div className="review-top">
+                  <div className="stars">
+                    {[...Array(5)].map((_, idx) => (
+                      <Star key={idx} style={{ opacity: idx < review.rating ? 1 : 0.3 }} />
+                    ))}
+                  </div>
+                  <span>{review.time}</span>
+                </div>
+                <h3 style={{ fontSize: '15px', fontWeight: 'bold' }}>{review.title}</h3>
+                <p style={{ fontStyle: 'italic', color: '#555' }}>{review.text}</p>
+                <small style={{ fontWeight: '500' }}>— {review.name} (Verified Buyer)</small>
+              </div>
+            ))}
           </div>
-          <h3>Obsessed with the fit!</h3>
-          <p>"This is officially my new favorite set. The <mark className="highlight-text">compression is perfect</mark> without digging in, and it stays perfectly in place during my HIIT workouts."</p>
-          <small>— Sarah M. (Verified Buyer)</small>
         </div>
-        <div className="review-card">
-          <div className="review-top">
-            <div className="stars"><Star/><Star/><Star/><Star/><Star/></div>
-            <span>1 WEEK AGO</span>
+
+        <div className="review-carousel-nav" aria-label="Review navigation">
+          <button
+            className="review-carousel-arrow"
+            onClick={() => setActiveReview(prev => prev === 0 ? clothingReviews.length - 1 : prev - 1)}
+            aria-label="Previous review"
+          >
+            <ChevronLeft aria-hidden="true" />
+          </button>
+          <div className="carousel-dots" style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
+            {clothingReviews.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveReview(i)}
+                style={{
+                  width: '8px', height: '8px', borderRadius: '50%', padding: 0,
+                  background: activeReview === i ? '#111' : '#ccc', border: 'none', transition: 'background 0.3s'
+                }}
+                aria-label={`Go to review ${i + 1}`}
+                aria-current={activeReview === i ? 'true' : undefined}
+              />
+            ))}
           </div>
-          <h3>So flattering</h3>
-          <p>"The <mark className="highlight-text">seamless design</mark> really contours nicely. I was worried about the lighter color being see-through but it is 100% squat proof. Buying in black next!"</p>
-          <small>— Jessica T. (Verified Buyer)</small>
+          <button
+            className="review-carousel-arrow"
+            onClick={() => setActiveReview(prev => prev === clothingReviews.length - 1 ? 0 : prev + 1)}
+            aria-label="Next review"
+          >
+            <ChevronRight aria-hidden="true" />
+          </button>
         </div>
-        <div style={{ display: 'flex', gap: '10px', marginTop: '24px' }}>
-          <button style={{ flex: 1, padding: '14px 10px', background: '#333', color: '#fff', border: '1px solid #333', fontSize: '11px', letterSpacing: '0.05em' }} onClick={() => setReviewForm(true)}>Write a Review</button>
-          <button style={{ flex: 1, padding: '14px 10px', background: 'transparent', color: '#333', border: '1px solid #333', fontSize: '11px', letterSpacing: '0.05em' }}>SHOW MORE</button>
+
+        <div className="review-actions" style={{ display: 'flex', gap: '10px', marginTop: '24px' }}>
+          <button className="review-action-primary" style={{ flex: 1, padding: '14px 10px', background: '#333', color: '#fff', border: '1px solid #333', fontSize: '11px', letterSpacing: '0.05em' }} onClick={() => setRestrictedMsg(true)}>Write a Review</button>
+          <button className="review-action-secondary" style={{ flex: 1, padding: '14px 10px', background: 'transparent', color: '#333', border: '1px solid #333', fontSize: '11px', letterSpacing: '0.05em' }} onClick={() => setRestrictedMsg(true)}>SHOW MORE</button>
         </div>
       </section>
 
@@ -394,413 +766,353 @@ export function App() {
       </section>
     </main>
 
-    {guide&&<SizeGuide close={()=>setGuide(false)} currentSize={size} setSize={setSize}/>} 
-    {reviewForm&&<ReviewForm close={()=>setReviewForm(false)}/>} 
+    {guide&&<SizeGuide close={()=>setGuide(false)} currentSize={size} setSize={setSize}/>}
+    {reviewForm&&<ReviewForm close={()=>setReviewForm(false)} onPlaceholder={() => setRestrictedMsg(true)}/>}
     {menu && (
-      <div className="overlay menu-overlay" onClick={() => setMenu(false)}>
-        <nav className="gymshark-menu" onClick={e => e.stopPropagation()}>
-          {/* 1. Header Control */}
-          <div className="menu-header">
-            <button aria-label="Close menu" onClick={() => setMenu(false)}>
-              <X size={20} />
-            </button>
-            <button aria-label="Wishlist" className="menu-wishlist-btn" onClick={() => { setMenu(false); setWishlistOpen(true); }}>
-              <Heart size={20} />
-              {wishlist.length > 0 && <b>{wishlist.length}</b>}
-            </button>
-          </div>
-
-          {/* 2. Search Bar */}
-          <section className="menu-search-wrapper">
-            <div className="menu-search-box" onClick={() => { setMenu(false); setSearchOpen(true); }} style={{ cursor: 'pointer' }}>
-              <Search size={16} />
-              <input type="text" placeholder="What are you looking for today?" readOnly style={{ pointerEvents: 'none' }} />
-            </div>
-          </section>
-
-          {/* 3. Interactive Tabs */}
-          <div className="menu-tabs">
-            {['Women', 'Men', 'Accessories'].map(tab => (
-              <button 
-                key={tab} 
-                className={menuTab === tab ? 'active' : ''} 
-                onClick={() => setMenuTab(tab)}
-              >
-                {tab}
+      <div className="overlay menu-overlay editorial-menu-overlay" onClick={() => setMenu(false)}>
+        <section className="editorial-menu-page" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-label="OODSTORE menu">
+          <header className="editorial-menu-topbar">
+            <span>OODSTORE</span>
+            <div>
+              <button onClick={() => { setMenu(false); setSearchOpen(true); }} aria-label="Open search"><Search size={18} /></button>
+              <button onClick={() => { setMenu(false); setWishlistOpen(true); }} aria-label="Open saved pieces" className="editorial-menu-saved">
+                <Heart size={18} />
+                {wishlist.length > 0 && <b>{wishlist.length}</b>}
               </button>
-            ))}
+              <button onClick={() => setMenu(false)} aria-label="Close menu"><X size={19} /></button>
+            </div>
+          </header>
+
+          <div className="editorial-menu-scroll">
+            <div className="editorial-menu-intro">
+              <p>{menuCollections[menuTab].eyebrow}</p>
+              <h2>{menuCollections[menuTab].title}</h2>
+            </div>
+
+            <div className="editorial-menu-tabs" role="tablist" aria-label="Shop departments">
+              {['Women', 'Men', 'Accessories'].map(tabName => (
+                <button
+                  key={tabName}
+                  role="tab"
+                  aria-selected={menuTab === tabName}
+                  className={menuTab === tabName ? 'active' : ''}
+                  onClick={() => setMenuTab(tabName)}
+                >
+                  {tabName}
+                </button>
+              ))}
+            </div>
+
+            <button className="editorial-menu-feature" onClick={() => { setMenu(false); setRestrictedMsg(true); }} aria-label={`Explore ${menuCollections[menuTab].feature}`}>
+              <img src={products[0].image} alt="Belted Cotton Shirt collection" />
+              <span><small>FEATURED EDIT</small><strong>{menuCollections[menuTab].feature}</strong><i>DISCOVER <ArrowRight size={14} /></i></span>
+            </button>
+
+            <div className="editorial-menu-links" role="navigation" aria-label={`${menuTab} collections`}>
+              {menuCollections[menuTab].links.map(([title, note], index) => (
+                <button key={title} onClick={() => { setMenu(false); setRestrictedMsg(true); }}>
+                  <span>0{index + 1}</span>
+                  <span><strong>{title}</strong><small>{note}</small></span>
+                  <ArrowRight size={16} />
+                </button>
+              ))}
+            </div>
+
+            <div className="editorial-menu-service">
+              <button onClick={() => { setMenu(false); setWishlistOpen(true); }}><Heart size={17} /><span><strong>Saved pieces</strong><small>{wishlist.length ? `${wishlist.length} in your edit` : 'Build your personal edit'}</small></span><ArrowRight size={15} /></button>
+              <button onClick={() => { setMenu(false); setExpertOpen(true); }}><span className="editorial-menu-monogram">O</span><span><strong>Personal styling</strong><small>Talk to the OODSTORE team</small></span><ArrowRight size={15} /></button>
+            </div>
           </div>
 
-          <section className="menu-scrollable-content">
-            {/* 4. Banner Cards Category Row */}
-            <div className="menu-banners-row">
-              {menuTab === 'Women' && (
-                <>
-                  <div className="menu-banner-card">
-                    <img src="/assets/grey-1.jpg" alt="Sleek Corset Burkini - Grey" />
-                    <div className="banner-overlay"><h4>NEW IN</h4></div>
-                  </div>
-                  <div className="menu-banner-card">
-                    <img src="/assets/grey-2.jpg" alt="Sleek Corset Burkini - Grey second view" />
-                    <div className="banner-overlay"><h4>SUMMER</h4></div>
-                  </div>
-                </>
-              )}
-              {menuTab === 'Men' && (
-                <>
-                  <div className="menu-banner-card">
-                    <img src="/assets/olive.jpg" alt="Men's New In" />
-                    <div className="banner-overlay"><h4>NEW IN</h4></div>
-                  </div>
-                  <div className="menu-banner-card">
-                    <img src="/assets/burgundy.jpg" alt="Athletic" />
-                    <div className="banner-overlay"><h4>TRAINING</h4></div>
-                  </div>
-                </>
-              )}
-              {menuTab === 'Accessories' && (
-                <>
-                  <div className="menu-banner-card">
-                    <img src="/assets/barbie.jpg" alt="Bags" />
-                    <div className="banner-overlay"><h4>BAGS</h4></div>
-                  </div>
-                  <div className="menu-banner-card">
-                    <img src="/assets/aqua.jpg" alt="Headwear" />
-                    <div className="banner-overlay"><h4>HEADWEAR</h4></div>
-                  </div>
-                </>
-              )}
-            </div>
-
-            {/* 5. Navigation Link List */}
-            <div className="menu-nav-links">
-              {menuTab === 'Women' && [
-                'Trending', 'Clothing', 'Explore', 'Explore Collections', 'Accessories', 'Shop By Activity', 'Shop By Colour', 'Last Chance'
-              ].map(item => (
-                <button key={item} onClick={() => setMenu(false)}>
-                  <span>{item}</span>
-                  <ChevronRight size={16} />
-                </button>
-              ))}
-              {menuTab === 'Men' && [
-                'New In', 'T-Shirts & Tops', 'Hoodies & Sweats', 'Shorts', 'Pants', 'Accessories', 'Sale'
-              ].map(item => (
-                <button key={item} onClick={() => setMenu(false)}>
-                  <span>{item}</span>
-                  <ChevronRight size={16} />
-                </button>
-              ))}
-              {menuTab === 'Accessories' && [
-                'All Accessories', 'Headwear', 'Bags', 'Socks', 'Equipment', 'New Releases'
-              ].map(item => (
-                <button key={item} onClick={() => setMenu(false)}>
-                  <span>{item}</span>
-                  <ChevronRight size={16} />
-                </button>
-              ))}
-            </div>
-          </section>
-        </nav>
+          <footer className="editorial-menu-footer"><span>CAIRO, EGYPT</span><span>EN · EGP</span></footer>
+        </section>
       </div>
     )}
 
-    {/* Full-Screen Search overlay */}
+    {/* Editorial search experience */}
     {searchOpen && (
-      <div className="overlay search-overlay" onClick={() => setSearchOpen(false)}>
-        <div className="search-page-content" onClick={(e) => e.stopPropagation()}>
-          {/* Search Header */}
-          <div className="search-header">
-            <button className="search-back-btn" onClick={() => setSearchOpen(false)} aria-label="Back">
-              <ChevronLeft size={24} />
-            </button>
-            <div className="search-input-box">
-              <Search size={16} />
-              <input type="text" placeholder="What are you looking for today?" autoFocus />
-            </div>
-          </div>
+      <div className="overlay editorial-search-overlay" onClick={() => setSearchOpen(false)}>
+        <section className="editorial-search-page" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label="Search OODSTORE">
+          <header className="editorial-search-topbar">
+            <span>OODSTORE</span>
+            <button onClick={() => setSearchOpen(false)} aria-label="Close search"><X size={19} /></button>
+          </header>
 
-          <div className="search-scrollable">
-            {/* Trending Searches */}
-            <div className="trending-searches-section">
-              <h3>TRENDING SEARCHES</h3>
-              <div className="trending-list">
-                {['Bratz', 'Mens Shorts', 'Womens Shorts', 'Sports Bra', 'Running'].map(term => (
-                  <button key={term} className="trending-item" onClick={() => alert(`Searching for ${term}...`)}>
-                    {term}
+          <div className="editorial-search-scroll">
+            <div className="editorial-search-intro">
+              <p>DISCOVER</p>
+              <h2>Find your next piece.</h2>
+            </div>
+
+            <div className="editorial-search-field">
+              <Search size={19} />
+              <inpu
+                type="search"
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+                placeholder="Search shirts, colours, edits..."
+                aria-label="Search products"
+                autoFocus
+              />
+              {searchQuery && <button onClick={() => setSearchQuery('')} aria-label="Clear search"><X size={16} /></button>}
+            </div>
+
+            {searchQuery.trim() ? (
+              <section className="editorial-search-results">
+                <div className="editorial-search-section-head">
+                  <div><p>SEARCH RESULTS</p><h3>{searchMatches.length ? 'Pieces found' : 'Nothing matched'}</h3></div>
+                  <span>{searchMatches.length}</span>
+                </div>
+                {searchMatches.length ? (
+                  <div className="editorial-search-grid">
+                    {searchMatches.map((product, index) => (
+                      <article className="editorial-search-product" key={`${product.name}-${index}`}>
+                        <button className="editorial-search-product-image" onClick={() => { setSearchOpen(false); setRestrictedMsg(true); }} aria-label={`View ${product.name}`}>
+                          <img src={product.image} alt={product.name} />
+                        </button>
+                        <div className="editorial-search-product-copy">
+                          <div><h4>{product.name}</h4><span>{index === 0 ? 'Grey' : 'Seasonal colour'}</span></div>
+                          <button className={wishlist.some(item => item.name === product.name) ? 'saved' : ''} onClick={() => toggleWishlist(product)} aria-label={`Save ${product.name}`}><Heart size={16} /></button>
+                          <p>{product.price}</p>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="editorial-search-empty">
+                    <p>Try a simpler phrase or explore one of the edits below.</p>
+                    <button onClick={() => setSearchQuery('')}>BACK TO DISCOVER</button>
+                  </div>
+                )}
+              </section>
+            ) : (
+              <div className="editorial-search-discovery">
+                <section className="editorial-search-prompts">
+                  <div className="editorial-search-section-head"><div><p>START HERE</p><h3>Popular searches</h3></div></div>
+                  <div>
+                    {['Belted shirts', 'Cotton layers', 'Everyday tailoring', 'New arrivals'].map((term, index) => (
+                      <button key={term} onClick={() => setSearchQuery(term.split(' ')[0])}>
+                        <span>0{index + 1}</span><strong>{term}</strong><ArrowRight size={16} />
+                      </button>
+                    ))}
+                  </div>
+                </section>
+
+                <section className="editorial-search-feature">
+                  <button className="editorial-search-feature-image" onClick={() => { setSearchOpen(false); setRestrictedMsg(true); }} aria-label="Explore the shirt edit">
+                    <img src={products[0].image} alt="The shirt edit" />
                   </button>
-                ))}
-              </div>
-            </div>
+                  <div><p>THE CURRENT EDIT</p><h3>Relaxed structure, considered details.</h3><button onClick={() => setSearchQuery('Shirt')}>EXPLORE SHIRTS <ArrowRight size={14} /></button></div>
+                </section>
 
-            {/* Recently Viewed */}
-            <div className="recently-viewed-section">
-              <h3>RECENTLY VIEWED</h3>
-              <div className="search-rail">
-                {products.slice(0, 4).map((p, i) => (
-                  <article className="search-card" key={`search-rv-${i}`}>
-                    <div className="search-card-image">
-                      <img src={p.image} alt={p.name} onClick={() => setRestrictedMsg(true)} style={{cursor:'pointer'}} />
-                      <button className="search-card-quick-bag" onClick={() => setRestrictedMsg(true)} aria-label="Quick Add">
-                        <ShoppingBag size={14} />
-                      </button>
-                      <button className={`search-card-wish ${wishlist.some(x => x.name === p.name) ? 'saved' : ''}`} onClick={() => toggleWishlist(p)} aria-label="Save">
-                        <Heart size={14} />
-                      </button>
-                      {i === 0 && <span className="search-card-badge">NEW & IMPROVED</span>}
-                    </div>
-                    <div className="search-card-info">
-                      <h4>{p.name}</h4>
-                      <p className="search-card-category">{i === 0 ? 'Light Support' : 'Jumpsuit fit'}</p>
-                      <p className="search-card-color">{i === 0 ? 'Butter Yellow' : 'Blue wash'}</p>
-                      <p className="search-card-price">{p.price}</p>
-                    </div>
-                  </article>
-                ))}
+                <section className="editorial-search-recent">
+                  <div className="editorial-search-section-head"><div><p>RETURN TO</p><h3>Recently viewed</h3></div></div>
+                  <div className="editorial-search-recent-grid">
+                    {products.slice(0, 2).map((product, index) => (
+                      <article key={`${product.name}-recent-${index}`}>
+                        <button onClick={() => { setSearchOpen(false); setRestrictedMsg(true); }} aria-label={`View ${product.name}`}><img src={product.image} alt={product.name} /></button>
+                        <h4>{product.name}</h4><p>{product.price}</p>
+                      </article>
+                    ))}
+                  </div>
+                </section>
               </div>
-            </div>
-        </div>
+            )}
+          </div>
+
+          <footer className="editorial-search-footer">Curated for considered, everyday dressing.</footer>
+        </section>
       </div>
-    </div>
-  )}
-         {/* Cart/Wishlist Drawer overlay */}
-    {cartOpen && (
-      <div className="overlay cart-overlay" onClick={() => setCartOpen(false)}>
-        <aside className="gymshark-cart" onClick={(e) => e.stopPropagation()}>
-          {/* Header */}
-          <div className="cart-header">
-            <h2>YOUR BAG</h2>
-            <button className="cart-close-btn" onClick={() => setCartOpen(false)} aria-label="Close cart">
-              <X size={22} />
-            </button>
-          </div>
-
-          {/* Switch Tabs */}
-          <div className="cart-tabs-switch-wrapper">
-            <div className="cart-tabs-switch">
-              <button 
-                className={`cart-tab-btn ${cartTab === 'bag' ? 'active' : ''}`} 
-                onClick={() => setCartTab('bag')}
-                aria-label="Shopping Bag"
-              >
-                <ShoppingBag size={18} />
-              </button>
-              <button 
-                className={`cart-tab-btn ${cartTab === 'wishlist' ? 'active' : ''}`} 
-                onClick={() => setCartTab('wishlist')}
-                aria-label="Wishlist"
-              >
-                <Heart size={18} />
-              </button>
+    )}
+    {/* Dedicated wishlist drawer */}
+    {wishlistOpen && (
+      <div className="overlay premium-wishlist-overlay" onClick={() => setWishlistOpen(false)}>
+        <aside className="premium-wishlist-drawer" onClick={(e) => e.stopPropagation()} aria-label="Saved pieces">
+          <header className="premium-wishlist-header">
+            <div>
+              <p>YOUR EDIT</p>
+              <h2>Saved pieces</h2>
             </div>
-          </div>
+            <div className="premium-wishlist-header-actions">
+              <span>{wishlist.length} {wishlist.length === 1 ? 'piece' : 'pieces'}</span>
+              <button onClick={() => setWishlistOpen(false)} aria-label="Close saved pieces"><X size={19} /></button>
+            </div>
+          </header>
 
-          {/* Tab 1: Bag Content */}
-          {cartTab === 'bag' && (
-            <>
-              {/* Free Shipping Progress */}
-              <div className={`cart-shipping-progress-wrapper ${added && 1899 * cartQty >= 2500 ? 'shipping-unlocked' : ''}`}>
-                {added && 1899 * cartQty >= 2500 ? (
-                  <p className="shipping-progress-text">🎉 You've unlocked <b>Free Standard Shipping</b>!</p>
-                ) : (
-                  <p className="shipping-progress-text">
-                    You're <b>LE {added ? Math.max(0,2500 - 1899 * cartQty) : 2500}.00 EGP</b> away from Free Standard Shipping <Info size={12} className="info-inline" />
-                  </p>
-                )}
-                <div className="shipping-progress-bar-track">
-                  <div 
-                    className="shipping-progress-bar-fill" 
-                    style={{ width: `${added ? Math.min(100, (1899 * cartQty / 2500) * 100) : 0}%` }}
-                  ></div>
-                </div>
-                <div className="shipping-progress-labels">
-                  <span>LE 0.00</span>
-                  <span>LE 2,500.00</span>
-                </div>
-              </div>
-
-              {/* Urgency Stock callout */}
-              <div className="cart-urgency-callout">
-                <Info size={16} className="callout-icon" />
-                <p>Your items aren't reserved, checkout quickly to make sure you don't miss out.</p>
-              </div>
-
-              {/* Cart Scrollable Items */}
-              <div className="cart-scroll-content">
-                {added && cartQty > 0 ? (
-                  <article className="cart-item-card">
-                    <div className="cart-item-img">
-                      <img src="/assets/grey-1.jpg" alt="Sleek Corset Burkini - Grey" />
-                    </div>
-                    <div className="cart-item-info">
-                      <span className="cart-item-badge">NEW & IMPROVED</span>
-                      <h3>Sleek Corset Burkini - Grey</h3>
-                      <p className="cart-item-specs">Grey - {size} - 3-piece set</p>
-                      <p className="cart-item-price">LE 1,899.00 EGP</p>
-                      
-                      <button className="cart-item-wish-btn" onClick={() => toggleWishlist({name:'Sleek Corset Burkini - Grey', price:'LE 1,899.00 EGP', image:'/assets/grey-1.jpg'})} aria-label="Save to Love List">
-                        <Heart size={16} />
-                      </button>
-
-                      <div className="cart-item-qty-selector">
-                        <button onClick={() => {
-                          if (cartQty <= 1) {
-                            setAdded(false);
-                            setCartQty(0);
-                          } else {
-                            setCartQty(q => q - 1);
-                          }
-                        }} aria-label="Decrease quantity">—</button>
-                        <span>{cartQty}</span>
-                        <button onClick={() => setCartQty(q => q + 1)} aria-label="Increase quantity">+</button>
+          {wishlist.length > 0 ? (
+            <div className="premium-wishlist-content">
+              <p className="premium-wishlist-intro">A considered collection of the pieces you want to return to.</p>
+              <div className="premium-wishlist-list">
+                {wishlist.map((item, index) => (
+                  <article className="premium-wishlist-item" key={item.name} style={{'--wish-delay': `${120 + index * 70}ms`}}>
+                    <button className="premium-wishlist-image" onClick={() => { setWishlistOpen(false); setRestrictedMsg(true); }} aria-label={`View ${item.name}`}>
+                      <img src={item.image} alt={item.name} />
+                      <span>VIEW</span>
+                    </button>
+                    <div className="premium-wishlist-copy">
+                      <p>OODSTORE</p>
+                      <h3>{item.name}</h3>
+                      <span className="premium-wishlist-price">{item.price}</span>
+                      <div className="premium-wishlist-item-actions">
+                        <button className="premium-wishlist-view" onClick={() => { setWishlistOpen(false); setRestrictedMsg(true); }}>VIEW PRODUCT <ArrowRight size={14} /></button>
+                        <button className="premium-wishlist-remove" onClick={() => toggleWishlist(item)} aria-label={`Remove ${item.name} from saved pieces`}><Trash2 size={15} /></button>
                       </div>
                     </div>
                   </article>
-                ) : (
-                  <div className="empty-cart-state">
-                    <ShoppingBag size={48} />
-                    <h3>Your bag is empty</h3>
-                    <p>Add items to your bag to see them here.</p>
-                    <button className="keep-browsing-btn" onClick={() => setCartOpen(false)}>KEEP BROWSING</button>
-                  </div>
-                )}
-
-                {/* Add a Little Extra Cross Sell */}
-                {added && (
-                  <div className="cart-cross-sell">
-                    <h4>ADD A LITTLE EXTRA</h4>
-                    <p className="cross-sell-subtitle">Add one or more of these items to get free delivery</p>
-                    <div className="cross-sell-rail">
-                      <article className="cross-sell-card">
-                        <img src="/assets/burgundy.jpg" alt="Sleek Burgundy Corset Burkini" />
-                        <div className="cross-sell-info">
-                          <span className="cross-sell-badge">SALE | SAVE LE 300</span>
-                          <h5>Sleek Corset Burkini</h5>
-                          <p className="cross-sell-price">
-                            LE 1,599.00 <span className="strike-price">LE 1,899.00</span>
-                          </p>
-                          <button className="cross-sell-add-btn" onClick={() => setRestrictedMsg(true)}>
-                            + ADD
-                          </button>
-                        </div>
-                      </article>
-                      <article className="cross-sell-card">
-                        <img src="/assets/barbie.jpg" alt="Barbie Burkini" onClick={() => setRestrictedMsg(true)} style={{cursor:'pointer'}} />
-                        <div className="cross-sell-info">
-                          <h5>Barbie Burkini</h5>
-                          <p className="cross-sell-price">LE 2,499.00</p>
-                          <button className="cross-sell-add-btn" onClick={() => setRestrictedMsg(true)}>
-                            + ADD
-                          </button>
-                        </div>
-                      </article>
-                    </div>
-                  </div>
-                )}
-
-                {/* Discount Code Form */}
-                {added && (
-                  <div className="cart-discount-section">
-                    <h4>DISCOUNT CODE</h4>
-                    <form className="cart-discount-form" onSubmit={(e) => {
-                      e.preventDefault();
-                      setDiscountApplied(true);
-                      alert("Discount code applied! LE 150.00 off subtotal.");
-                    }}>
-                      <input 
-                        type="text" 
-                        placeholder="Enter code" 
-                        value={discountCode} 
-                        onChange={e => setDiscountCode(e.target.value)} 
-                        required 
-                      />
-                      <button type="submit" className="discount-apply-btn">APPLY</button>
-                    </form>
-                    <p className="discount-notice">
-                      <Info size={12} className="info-inline" /> Gift Card codes can be applied at checkout.
-                    </p>
-                  </div>
-                )}
-
-                {/* Order Summary */}
-                {added && (
-                  <div className="cart-summary-section">
-                    <h4>ORDER SUMMARY</h4>
-                    <div className="summary-row">
-                      <span>Sub Total</span>
-                      <span>LE {1899 * cartQty - (discountApplied ? 150 : 0)}.00 EGP</span>
-                    </div>
-                    <div className="summary-row">
-                      <span>Estimated Shipping</span>
-                      <span>{1899 * cartQty >= 2500 ? 'FREE' : 'LE 50.00 EGP'}</span>
-                    </div>
-                    <div className="summary-row total-row">
-                      <span>Total</span>
-                      <span>LE {1899 * cartQty - (discountApplied ? 150 : 0) + (1899 * cartQty >= 2500 ? 0 : 50)}.00 EGP</span>
-                    </div>
-                    
-                    <button className="checkout-btn" onClick={() => alert("Redirecting to checkout page...")}>
-                      PROCEED TO CHECKOUT
-                    </button>
-                  </div>
-                )}
+                ))}
               </div>
-            </>
-          )}
-
-          {/* Tab 2: Wishlist Content */}
-          {cartTab === 'wishlist' && (
-            <div className="cart-scroll-content">
-              <div className="wishlist-head-inside">
-                <h3>Saved pieces ({wishlist.length})</h3>
-              </div>
-              {wishlist.length === 0 ? (
-                <div className="empty-love">
-                  <Heart size={40} style={{ color: '#cbd5e1', marginBottom: '16px' }} />
-                  <h3>Your love list is empty</h3>
-                  <p>Tap the heart on any piece to save it here.</p>
-                  <button className="keep-browsing-btn" onClick={() => setCartOpen(false)}>KEEP BROWSING</button>
-                </div>
-              ) : (
-                <div className="wish-items-drawer" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  {wishlist.map(p => (
-                    <article className="wish-item-card-row" key={p.name} style={{ display: 'grid', gridTemplateColumns: '70px 1fr', gap: '16px', background: '#ffffff', border: 'none', padding: '12px', position: 'relative' }}>
-                      <img src={p.image} alt={p.name} style={{ width: '70px', aspectRatio: '3/4', objectFit: 'cover', borderRadius: '4px' }} />
-                      <div className="wish-item-info" style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
-                        <h3 style={{ fontSize: '12px', fontWeight: '600', color: '#0f172a', margin: '0 0 4px 0' }}>{p.name}</h3>
-                        <p style={{ fontSize: '11px', color: '#64748b', margin: '0 0 10px 0' }}>{p.price}</p>
-                        <div className="wish-item-actions" style={{ display: 'flex', gap: '10px' }}>
-                          <button className="wish-move-to-bag" onClick={() => { toggleWishlist(p); setAdded(true); setCartQty(1); setCartTab('bag'); }} style={{ border: 'none', background: '#000000', color: '#ffffff', fontSize: '9px', fontWeight: '700', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer' }}>
-                            MOVE TO BAG
-                          </button>
-                          <button className="wish-remove-btn" onClick={() => toggleWishlist(p)} style={{ border: '1px solid #cbd5e1', background: '#ffffff', color: '#64748b', fontSize: '9px', fontWeight: '600', padding: '4px 8px', borderRadius: '12px', cursor: 'pointer' }}>
-                            REMOVE
-                          </button>
-                        </div>
-                      </div>
-                    </article>
-                  ))}
-                </div>
-              )}
+            </div>
+          ) : (
+            <div className="premium-wishlist-empty">
+              <div className="premium-wishlist-empty-icon"><Heart size={28} /></div>
+              <p>YOUR PERSONAL EDIT</p>
+              <h3>Save what speaks to you.</h3>
+              <span>Tap the heart on any piece and it will be waiting here when you return.</span>
+              <button onClick={() => setWishlistOpen(false)}>CONTINUE BROWSING <ArrowRight size={15} /></button>
             </div>
           )}
+
+          <footer className="premium-wishlist-footer">
+            <Heart size={13} /> Pieces you love, kept together.
+          </footer>
         </aside>
       </div>
     )}
-    {/* Sticky bottom buy bar */}
-    {showSticky && (
-      <div className="sticky-buy-bar">
-        <div className="sticky-buy-content">
-          <img src="/assets/grey-1.jpg" alt="Sleek Corset Burkini - Grey thumbnail" />
-          <div className="sticky-buy-info">
-            <h4>Sleek Corset Burkini - Grey</h4>
-            <p>LE 1,899.00 EGP</p>
-          </div>
+
+    {/* Cart drawer overlay */}
+    {cartOpen && (
+        <div className="overlay cart-overlay" onClick={() => setCartOpen(false)}>
+          <aside className="gymshark-cart sleek-cart" onClick={(e) => e.stopPropagation()}>
+            {/* Header */}
+            <div className="sleek-cart-header">
+              <h2>Your cart</h2>
+              <button className="cart-close-btn" onClick={() => setCartOpen(false)} aria-label="Close cart">
+                <X size={20} strokeWidth={1.5} />
+              </button>
+            </div>
+
+            {/* Free Shipping Banner */}
+            <div className={`sleek-shipping-banner ${added && cartQty > 0 ? 'is-unlocked' : 'is-empty'}`}>
+              <p>{added && cartQty > 0 ? "You've unlocked free shipping!" : "Add anything to unlock free shipping"}</p>
+              <div className="sleek-shipping-bar-full"></div>
+            </div>
+
+            <div className="cart-scroll-content sleek-cart-content">
+              {added && cartQty > 0 ? (
+                <>
+                  {/* Cart Item */}
+                  <article className="sleek-cart-item">
+                    <div className="sleek-item-image-wrapper">
+                      <img src="https://oodstore.com/cdn/shop/files/photo_2026-04-27_07-43-35.jpg?v=1777265216" alt="Belted Cotton Shirt" />
+                    </div>
+                    <div className="sleek-item-details">
+                      <div className="sleek-item-title-row">
+                        <h3>Belted Cotton Shirt</h3>
+                        <span className="sleek-item-price">LE 750.00 EGP</span>
+                      </div>
+                      <span className="sleek-badge-new">New</span>
+                      <p className="sleek-item-subtitle">Size: {size === 'Small' ? 'S' : size === 'Medium' ? 'M' : size === 'Large' ? 'L' : size === 'X-Large' ? 'XL' : 'XXL'}</p>
+
+                      <div className="sleek-qty-selector">
+                        <button className="sleek-qty-btn trash" onClick={() => { setAdded(false); setCartQty(0); setCartOpen(false); }} aria-label="Remove item">
+                          <Trash2 size={14} strokeWidth={1.5} color="#555" />
+                        </button>
+                        <span className="sleek-qty-val">{cartQty}</span>
+                        <button className="sleek-qty-btn" onClick={() => setCartQty(q => q + 1)} aria-label="Increase quantity">
+                          <Plus size={14} strokeWidth={1.5} color="#555" />
+                        </button>
+                      </div>
+                    </div>
+                  </article>
+
+                  {/* You may also like */}
+                  <div className="sleek-cross-sell">
+                    <div className="sleek-cross-sell-head">
+                      <h4>You may also like</h4>
+                    </div>
+
+                    <div className="sleek-cross-sell-scroll">
+                      <article className="sleek-cs-card">
+                        <div className="sleek-cs-image">
+                          <img src="https://oodstore.com/cdn/shop/files/photo_2026-04-27_07-43-35.jpg?v=1777265216" alt="Emerald Shirt" />
+                        </div>
+                        <div className="sleek-cs-info">
+                          <h5>Emerald Cotton Shirt</h5>
+                          <p className="sleek-cs-color">Color: Emerald</p>
+                          <div className="sleek-cs-swatches">
+                            <span style={{background: '#2d5a4c'}} className="active"></span>
+                            <span style={{background: '#000'}}></span>
+                            <span style={{background: '#c5b86a'}}></span>
+                            <span style={{background: '#c7c7c7'}}></span>
+                          </div>
+                          <div className="sleek-cs-bottom">
+                            <span className="sleek-cs-price">LE 750</span>
+                            <button className="sleek-cs-add" onClick={() => { setCartOpen(false); setRestrictedMsg(true); }}>Add</button>
+                          </div>
+                        </div>
+                      </article>
+                      <article className="sleek-cs-card">
+                        <div className="sleek-cs-image">
+                          <img src="https://oodstore.com/cdn/shop/files/photo_2026-04-27_07-43-35.jpg?v=1777265216" alt="Emerald Shirt" />
+                        </div>
+                        <div className="sleek-cs-info">
+                          <h5>Emerald Cotton Shirt</h5>
+                          <p className="sleek-cs-color">Color: Emerald</p>
+                          <div className="sleek-cs-swatches">
+                            <span style={{background: '#2d5a4c'}} className="active"></span>
+                            <span style={{background: '#000'}}></span>
+                            <span style={{background: '#c5b86a'}}></span>
+                            <span style={{background: '#c7c7c7'}}></span>
+                          </div>
+                          <div className="sleek-cs-bottom">
+                            <span className="sleek-cs-price">LE 750</span>
+                            <button className="sleek-cs-add" onClick={() => { setCartOpen(false); setRestrictedMsg(true); }}>Add</button>
+                          </div>
+                        </div>
+                      </article>
+                    </div>
+                  </div>
+                  <div className="cart-urgency-strip">
+                    <p><strong>High demand</strong><span> Your size is reserved for a short time. Complete checkout to keep it.</span></p>
+                  </div>
+                </>
+              ) : (
+                <div className="empty-cart-state" style={{marginTop: '40px'}}>
+                  <ShoppingBag size={48} />
+                  <h3>Your bag is empty</h3>
+                  <button className="keep-browsing-btn" onClick={() => setCartOpen(false)}>KEEP BROWSING</button>
+                </div>
+              )}
+            </div>
+
+            {/* Footer Summary */}
+            {added && cartQty > 0 && (
+              <div className="sleek-cart-footer">
+                <div className="sleek-footer-row">
+                  <span className="sleek-f-label">Shipping</span>
+                  <span className="sleek-f-val">Free</span>
+                </div>
+                <div className="sleek-footer-row">
+                  <span className="sleek-f-label bold">Subtotal<sup>1</sup></span>
+                  <span className="sleek-f-val bold">LE {750 * cartQty}.00 EGP</span>
+                </div>
+                <button className="sleek-checkout-btn" onClick={() => { setCartOpen(false); setRestrictedMsg(true); }}>
+                  Continue to Checkou
+                </button>
+                <p className="checkout-reassurance">Secure checkout · Free delivery unlocked · Pay safely on arrival</p>
+              </div>
+            )}
+          </aside>
         </div>
-        <button className={`sticky-buy-btn ${added ? 'added' : ''}`} onClick={() => {setAdded(true); setCartQty(1); setCartOpen(true);}}>
-          {added ? 'ADDED' : 'ADD TO BAG'}
-        </button>
-      </div>
-    )}
+      )}
+    {/* Sticky bottom buy bar */}
+      {!wishlistOpen && !searchOpen && !menu && (
+        <div className={`sticky-buy-bar sticky-bar-translucent ${showSticky ? 'sticky-visible' : ''} ${isStickySmall ? 'is-small' : ''}`} aria-hidden={!showSticky}>
+          <button className={`free-shipping-btn ${added ? 'added' : ''}`} onClick={() => {setAdded(true); setCartQty(1); setCartOpen(true);}}>
+            {added ? 'ADDED' : 'Free Shipping'}
+          </button>
+        </div>
+      )}
 
     {/* Fullscreen Photo Lightbox Viewer */}
     {lightboxImg && (
@@ -812,14 +1124,7 @@ export function App() {
       </div>
     )}
 
-    {/* Floating "Ask an Expert" Capsule FAB */}
-    {!footerInView && <button 
-      className={`ask-expert-fab ${showSticky ? 'has-sticky-bar' : ''}`} 
-      onClick={(e) => { e.preventDefault(); setExpertOpen(true); }}
-      aria-label="Ask an expert"
-    >
-      <span>Ask an Expert</span>
-    </button>}
+
 
     {/* Stylist Expert consultation drawer */}
     {expertOpen && (
@@ -834,7 +1139,7 @@ export function App() {
             <h2 className="expert-title">ASK THE FASHION EXPERT FROM YOURS</h2>
             <p className="expert-subtitle">We will follow up with you via email within 24-36 hours</p>
           </div>
-          <form className="expert-form" onSubmit={(e) => { e.preventDefault(); setExpertOpen(false); alert("Thank you! We will follow up with you via email within 24-36 hours."); }}>
+          <form className="expert-form" onSubmit={(e) => { e.preventDefault(); setExpertOpen(false); setRestrictedMsg(true); }}>
             <input type="text" placeholder="Your Name" required className="expert-input" />
             <input type="email" placeholder="Your Mail" required className="expert-input" />
             <input type="tel" placeholder="Your Phone" required className="expert-input" />
@@ -844,44 +1149,27 @@ export function App() {
       </div>
     )}
 
-    {/* Brand Restriction Notice Modal */}
+    {/* Preview environment notice */}
     {restrictedMsg && (
-      <div className="overlay" style={{zIndex: 10000, position: 'fixed', left: 0, right: 0, margin: '0 auto', maxWidth: '430px', justifyContent: 'center', alignItems: 'center', padding: '24px', boxSizing: 'border-box'}} onClick={() => setRestrictedMsg(false)}>
-        <div className="sheet" style={{
-          padding: '48px 32px 40px', 
-          textAlign: 'center', 
-          background: 'var(--lux-paper)', 
-          borderRadius: '28px', 
-          display: 'flex', 
-          flexDirection: 'column', 
-          alignItems: 'center',
-          boxShadow: '0 32px 64px -16px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,0,0,0.05)',
-          width: '100%',
-          maxWidth: '340px',
-          margin: 0
-        }} onClick={e => e.stopPropagation()}>
-          <div style={{
-            marginBottom: '28px', 
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '52px',
-            height: '52px',
-            background: 'linear-gradient(135deg, #2a2a26 0%, #171714 100%)', 
-            borderRadius: '50%', 
-            boxShadow: '0 12px 24px -4px rgba(23, 23, 20, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.15)', 
-            border: '1px solid rgba(255, 255, 255, 0.05)'
-          }}>
-            <ShieldCheck size={24} strokeWidth={1.5} style={{color: '#e3c473', filter: 'drop-shadow(0 2px 4px rgba(227, 196, 115, 0.3))'}}/>
+      <div className="overlay preview-notice-overlay" onClick={() => setRestrictedMsg(false)}>
+        <section className="preview-notice" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="preview-notice-title">
+          <header className="preview-notice-header">
+            <div><span>OODSTORE PREVIEW</span><small>PROJECT STATUS · 01</small></div>
+            <button onClick={() => setRestrictedMsg(false)} aria-label="Close preview notice"><X size={18} /></button>
+          </header>
+
+          <div className="preview-notice-body">
+            <span className="preview-notice-label">PREVIEW ENVIRONMENT</span>
+            <h2 id="preview-notice-title">Preview only.</h2>
+            <p className="preview-notice-copy">
+              This storefront is a design placeholder, so product details, prices and purchase actions are not final.
+            </p>
           </div>
-          <h2 style={{fontSize: '15px', textTransform: 'uppercase', marginBottom: '16px', fontFamily: 'var(--font-primary)', letterSpacing: '0.15em', color: 'var(--lux-ink)', fontWeight: 500}}>Restricted Access</h2>
-          <p style={{fontSize: '13px', color: 'var(--lux-muted)', lineHeight: '1.7', marginBottom: '36px', maxWidth: '300px', fontWeight: 300}}>
-            Due to an exclusive agreement with YOURS, this collection is currently restricted. We are solely authorized to showcase the <strong style={{fontWeight: 500, color: 'var(--lux-ink)'}}>Sleek Corset Burkini - Grey</strong> during this preview phase.
-          </p>
-          <button className="gold-glow-btn" onClick={() => setRestrictedMsg(false)}>
-            UNDERSTOOD
-          </button>
-        </div>
+
+          <footer className="preview-notice-footer">
+            <button onClick={() => setRestrictedMsg(false)}>CONTINUE EXPLORING <ArrowRight size={15} /></button>
+          </footer>
+        </section>
       </div>
     )}
   </div>
