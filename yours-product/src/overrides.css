@@ -9405,7 +9405,7 @@ header {
   .sticky-buy-bar.sticky-bar-translucent.sticky-visible.is-small {
     transform: translate3d(-50%, 0, 0) !important;
     transition:
-      opacity 0.42s ease-out,
+      opacity 0s linear,
       visibility 0s linear 0s !important;
   }
 
@@ -9560,16 +9560,24 @@ header {
 @keyframes stickyCtaMobileRise {
   0% {
     opacity: 0;
-    transform: translate3d(0, calc(100% + 28px), 0);
+    visibility: hidden;
+    transform: translate3d(0, 14px, 0);
   }
-  32% {
+  18% {
     opacity: 0;
+    visibility: hidden;
   }
-  64% {
+  18.01% {
+    opacity: 0;
+    visibility: visible;
+  }
+  58% {
     opacity: 1;
+    visibility: visible;
   }
   100% {
     opacity: 1;
+    visibility: visible;
     transform: translate3d(0, 0, 0);
   }
 }
