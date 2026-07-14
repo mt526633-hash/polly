@@ -9543,18 +9543,33 @@ header {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
   transform: translate3d(0, 0, 0);
 }
 
 @media (max-width: 600px) {
   .sticky-buy-bar.sticky-visible .sticky-cta-motion {
     backface-visibility: hidden !important;
-    will-change: transform !important;
+    will-change: transform, opacity !important;
     animation: stickyCtaMobileRise 0.82s cubic-bezier(0.16, 1, 0.3, 1) backwards !important;
   }
 }
 
 @keyframes stickyCtaMobileRise {
-  from { transform: translate3d(0, calc(100% + 28px), 0); }
-  to { transform: translate3d(0, 0, 0); }
+  0% {
+    opacity: 0;
+    transform: translate3d(0, calc(100% + 28px), 0);
+  }
+  32% {
+    opacity: 0;
+  }
+  64% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
 }
