@@ -9642,7 +9642,7 @@ header {
 /* Viewport-timed accordion card reveal: light enough for mobile GPUs. */
 .accordion-reveal-group:not(.is-visible) .accordion-reveal-item {
   opacity: 0 !important;
-  transform: translate3d(0, 18px, 0) !important;
+  transform: translate3d(0, 34px, 0) scale(0.965) !important;
 }
 
 .accordion-reveal-item {
@@ -9653,22 +9653,28 @@ header {
   opacity: 1;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden !important;
-  animation: accordionCardReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards !important;
+  transform-origin: center bottom !important;
+  will-change: transform, opacity !important;
+  animation: accordionCardReveal 0.82s cubic-bezier(0.16, 1, 0.3, 1) backwards !important;
 }
 
 .accordion-reveal-group.is-visible .accordion-reveal-item:nth-child(1) { animation-delay: 0.04s !important; }
-.accordion-reveal-group.is-visible .accordion-reveal-item:nth-child(2) { animation-delay: 0.11s !important; }
-.accordion-reveal-group.is-visible .accordion-reveal-item:nth-child(3) { animation-delay: 0.18s !important; }
-.accordion-reveal-group.is-visible .accordion-reveal-item:nth-child(4) { animation-delay: 0.25s !important; }
+.accordion-reveal-group.is-visible .accordion-reveal-item:nth-child(2) { animation-delay: 0.15s !important; }
+.accordion-reveal-group.is-visible .accordion-reveal-item:nth-child(3) { animation-delay: 0.26s !important; }
+.accordion-reveal-group.is-visible .accordion-reveal-item:nth-child(4) { animation-delay: 0.37s !important; }
 
 @keyframes accordionCardReveal {
-  from {
+  0% {
     opacity: 0;
-    transform: translate3d(0, 18px, 0);
+    transform: translate3d(0, 34px, 0) scale(0.965);
   }
-  to {
+  62% {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(0, -3px, 0) scale(1.004);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
   }
 }
 
