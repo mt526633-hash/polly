@@ -9783,3 +9783,20 @@ header {
     height: 0 !important;
   }
 }
+
+/* The newsletter is the true page ending; do not expose Chrome's white root canvas below it. */
+html,
+body {
+  overscroll-behavior-y: none !important;
+}
+
+#root,
+.page,
+.page > main {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.page > main > .newsletter:last-child {
+  margin-bottom: 0 !important;
+}
