@@ -135,6 +135,7 @@ function Header({onMenu,onSearch,onWishlist,onCart,onPlaceholder,wishlistCount,c
   });
   const chromeStateRef = useRef(chromeState);
   const lastScrollY = useRef(0);
+  const announcementHiddenAtY = useRef(null);
   const ticking = useRef(false);
 
   useEffect(() => {
@@ -156,9 +157,20 @@ function Header({onMenu,onSearch,onWishlist,onCart,onPlaceholder,wishlistCount,c
         const shouldHideAnnouncement = !atTop && (
           chromeStateRef.current.announcementHidden || currentScrollY > 170
         );
+
+        if (atTop) {
+          announcementHiddenAtY.current = null;
+        } else if (!chromeStateRef.current.announcementHidden && shouldHideAnnouncement) {
+          announcementHiddenAtY.current = currentScrollY;
+        }
+
+        const distanceAfterAnnouncement = announcementHiddenAtY.current === null
+          ? 0
+          : currentScrollY - announcementHiddenAtY.current;
+        const canHideHeader = chromeStateRef.current.announcementHidden && distanceAfterAnnouncement >= 300;
         const shouldHideHeader = !atTop && (
-          (chromeStateRef.current.headerHidden && currentScrollY > 120 && !scrollingUp) ||
-          (movedEnough && scrollingDown && currentScrollY > 230)
+          (chromeStateRef.current.headerHidden && !scrollingUp) ||
+          (movedEnough && scrollingDown && canHideHeader)
         );
 
         const nextChromeState = {
