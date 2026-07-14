@@ -8894,6 +8894,86 @@ header {
     transform 0.32s cubic-bezier(0.22, 1, 0.36, 1) !important;
 }
 
+/* Phone-safe cart layout: scroll products, never lose checkout actions. */
+.gymshark-cart.sleek-cart {
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+}
+
+.sleek-cart-header,
+.sleek-shipping-banner,
+.sleek-cart-footer {
+  flex: 0 0 auto !important;
+}
+
+.cart-scroll-content.sleek-cart-content {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  padding: 0 16px 16px !important;
+}
+
+.sleek-cart-footer {
+  position: relative !important;
+  inset: auto !important;
+  z-index: 5 !important;
+  margin-top: 0 !important;
+  padding: 9px 18px max(8px, env(safe-area-inset-bottom, 0px)) !important;
+  box-shadow: 0 -12px 26px rgba(90, 0, 16, 0.08) !important;
+}
+
+@media (max-height: 700px) {
+  .sleek-cart-header {
+    padding: 14px 16px 10px !important;
+  }
+
+  .sleek-cart-header h2 {
+    font-size: 24px !important;
+  }
+
+  .sleek-shipping-banner {
+    min-height: 42px !important;
+    margin: 10px 16px 0 !important;
+    padding: 8px 12px !important;
+  }
+
+  .sleek-shipping-banner p {
+    margin-bottom: 6px !important;
+    font-size: 10px !important;
+  }
+
+  .sleek-cart-footer {
+    padding-top: 7px !important;
+  }
+
+  .sleek-footer-row {
+    margin-bottom: 4px !important;
+  }
+
+  .sleek-f-label.bold,
+  .sleek-f-val.bold {
+    font-size: 16px !important;
+  }
+
+  .sleek-checkout-btn {
+    height: 43px !important;
+    margin-top: 5px !important;
+  }
+
+  .checkout-reassurance {
+    margin-top: 6px !important;
+    font-size: 10px !important;
+  }
+}
+
 
 /* Editorial search — a solid, self-contained storefront page. */
 .editorial-search-overlay {
