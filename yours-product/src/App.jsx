@@ -490,6 +490,33 @@ export function App() {
   useEffect(() => {
     const themeMeta = document.querySelector('meta[name="theme-color"]');
     let activeTheme = themeMeta?.getAttribute('content') || '';
+    let latestScrollY = window.scrollY;
+    let resizeTimer = null;
+    let hideTimer = null;
+
+    const clearResizeTimer = () => {
+      if (resizeTimer) window.clearTimeout(resizeTimer);
+      resizeTimer = null;
+    };
+
+    const clearHideTimer = () => {
+      if (hideTimer) window.clearTimeout(hideTimer);
+      hideTimer = null;
+    };
+
+    const commitSmall = (value) => {
+      if (stickySmallRef.current === value) return;
+      stickySmallRef.current = value;
+      setIsStickySmall(value);
+    };
+
+    const scheduleSmall = () => {
+      if (resizeTimer || stickySmallRef.current) return;
+      resizeTimer = window.setTimeout(() => {
+        resizeTimer = null;
+        if (stickyVisibleRef.current && latestScrollY > 1020) commitSmall(true);
+      }, 560);
+    };
 
     const handleScroll = () => {
       const newsletter = document.querySelector('.newsletter');
@@ -504,20 +531,37 @@ export function App() {
           ? 'rgb(233, 196, 140)'
           : 'rgb(255, 255, 255)';
       const scrollY = window.scrollY;
+      latestScrollY = scrollY;
       const nextVisible = stickyVisibleRef.current ? scrollY > 650 : scrollY > 760;
-      const nextSmall = nextVisible && (stickySmallRef.current ? scrollY > 900 : scrollY > 1020);
 
       if (newsletterNear !== footerInViewRef.current) {
         footerInViewRef.current = newsletterNear;
         setFooterInView(newsletterNear);
       }
-      if (nextVisible !== stickyVisibleRef.current) {
-        stickyVisibleRef.current = nextVisible;
-        setShowSticky(nextVisible);
-      }
-      if (nextSmall !== stickySmallRef.current) {
-        stickySmallRef.current = nextSmall;
-        setIsStickySmall(nextSmall);
+      if (nextVisible) {
+        clearHideTimer();
+        if (!stickyVisibleRef.current) {
+          stickyVisibleRef.current = true;
+          setShowSticky(true);
+        }
+        if (scrollY > 1020) scheduleSmall();
+        if (scrollY <= 900) {
+          clearResizeTimer();
+          commitSmall(false);
+        }
+      } else {
+        clearResizeTimer();
+        const wasSmall = stickySmallRef.current;
+        commitSmall(false);
+        if (stickyVisibleRef.current && !hideTimer) {
+          hideTimer = window.setTimeout(() => {
+            hideTimer = null;
+            if (latestScrollY <= 650) {
+              stickyVisibleRef.current = false;
+              setShowSticky(false);
+            }
+          }, wasSmall ? 760 : 240);
+        }
       }
       if (themeMeta && nextTheme !== activeTheme) {
         activeTheme = nextTheme;
@@ -528,6 +572,8 @@ export function App() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.visualViewport?.addEventListener('resize', handleScroll, { passive: true });
     return () => {
+      clearResizeTimer();
+      clearHideTimer();
       window.removeEventListener('scroll', handleScroll);
       window.visualViewport?.removeEventListener('resize', handleScroll);
     };
