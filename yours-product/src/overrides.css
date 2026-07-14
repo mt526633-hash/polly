@@ -9784,12 +9784,7 @@ header {
   }
 }
 
-/* The newsletter is the true page ending; do not expose Chrome's white root canvas below it. */
-html,
-body {
-  overscroll-behavior-y: none !important;
-}
-
+/* The newsletter is the true page ending; keep every layout surface flush with it. */
 #root,
 .page,
 .page > main {
