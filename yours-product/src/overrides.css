@@ -9300,6 +9300,25 @@ header {
   }
 }
 
+/* Fill the complete phone viewport, including the bottom safe-area surface. */
+@media (max-width: 699px) {
+  html,
+  body,
+  #root,
+  .page {
+    width: 100% !important;
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+    margin: 0 !important;
+    background-color: #fff !important;
+  }
+
+  html,
+  body {
+    overflow-x: hidden !important;
+  }
+}
+
 @keyframes cartCrossSellMobileFade {
   from { opacity: 0; }
   to { opacity: 1; }
